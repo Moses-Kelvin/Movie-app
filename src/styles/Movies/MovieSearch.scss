@@ -1,0 +1,56 @@
+@import '../../Variables/Variable.scss';
+
+.MovieSearch-section {
+    height: 100%;
+    color: $whiteColor;
+    padding-left: 1rem;
+    font-family: sans-serif;
+    >div:nth-child(1) {
+        width: 70%;
+        margin: auto;
+        border-bottom: 0.1rem solid grey;
+        margin-bottom: 2rem;
+    }
+}
+
+.MovieSearch-card  {
+    display: grid;
+    background-color: $darkGreyColor;
+    width: 70%;
+    height: 20%;
+    margin: auto; 
+    border: 0.1rem solid grey;
+}
+
+.MovieSearch-input, .MovieSearch-formControl {
+    background-color: $lightGreyColor;
+    width: 80%;
+}
+
+.MovieSearch-btn {
+    color: $whiteColor;
+    background-color: $redColor;
+    width: 80%;
+    border-radius: 0.1rem;
+}
+
+.MovieSearch-form {
+    display: grid;
+    justify-items: center;
+    align-self: center;
+    grid-row-gap: 2rem;
+}
+
+@media (max-width: 500px) {
+    .MovieSearch-section {
+        margin-bottom: 3rem;
+        >div:nth-child(1) {
+            width: 90%;
+        }
+    }
+    .MovieSearch-card {
+        height: fit-content;
+        width: 90%;
+        padding: 1rem 0;
+    }
+}

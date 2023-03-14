@@ -1,0 +1,19 @@
+@import '../../Variables/Variable.scss';
+
+.MovieGenreFilter {
+    display: flex;
+    column-gap: 3rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.MovieGenreFilter-btn {
+    padding: 1rem 2rem;
+    background-color: $darkGreyColor;
+    color: $whiteColor;
+}
+
+.filter-btn_color {
+    background-color: $redColor;
+}

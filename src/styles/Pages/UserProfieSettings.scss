@@ -1,0 +1,35 @@
+@import '../../Variables/Variable.scss';
+
+.UserProfieSettings-section {
+    color: $whiteColor;
+    font-family: sans-serif;
+    padding: 8rem 0;
+    >h1 {
+        padding: 0 0 1rem 4rem;
+        color: $textColor;
+    }
+}
+
+.UserProfieSettings-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: $darkGreyColor;
+    border-left: 0.5rem solid grey;
+    padding-bottom: 1rem;
+    width: 90%;
+    margin: auto;
+    border-radius: 0.5rem;
+}
+
+.edit-profile, .change-password {
+    padding: 1rem 1rem 1rem 3rem;
+}
+
+@media (max-width: 500px) {
+    .UserProfieSettings-card {
+        grid-template-columns: 1fr;
+    }
+    .edit-profile, .change-password {
+        padding-left: 1rem;
+    }
+}

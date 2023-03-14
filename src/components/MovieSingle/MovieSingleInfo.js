@@ -1,0 +1,39 @@
+import { Star } from "@mui/icons-material";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useGetSingleMovieQuery } from "../../store/features/moviesApiSlice";
+import '../../styles/MovieSingle/MovieSingleInfo.scss';
+
+const MovieSingleInfo = () => {
+
+    const { movieId } = useParams();
+
+    const { data, isFetching } = useGetSingleMovieQuery(movieId);
+
+    //   if (!isFetching) {
+    //     localStorage.setItem('singleMovie', JSON.stringify(data));
+    // }
+
+    const singleMovieResult =   JSON.parse(localStorage.getItem('singleMovie')); 
+
+    console.log(singleMovieResult);
+
+    return (
+        <section className="MovieSingleInfo_section">
+            <div>
+                <h1>{singleMovieResult.original_title}</h1>
+                <p>{singleMovieResult.release_date.split("-")[0]}</p>
+            </div>
+            <img src={`https://image.tmdb.org/t/p/w1280${singleMovieResult.backdrop_path}`} alt="" />
+            <div className="MovieSingleInfo_info">
+                <span><Star sx={{ color: 'yellow' }} /> {singleMovieResult.vote_average}</span>
+                <h4>Runtime: {singleMovieResult.runtime}min</h4>
+            </div>
+            <div>
+                <p>{singleMovieResult.overview}</p>
+            </div>
+        </section>
+    )
+};
+
+export default MovieSingleInfo;

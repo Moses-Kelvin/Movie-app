@@ -1,0 +1,13 @@
+.MovieSingle_section {
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+    width: 100%;
+    margin-bottom: 3rem;
+    padding-top: 6rem;
+}
+
+@media (max-width: 500px) {
+    .MovieSingle_section {
+        grid-template-columns: 1fr;
+    }
+}

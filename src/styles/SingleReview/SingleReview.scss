@@ -1,0 +1,17 @@
+@import '../../Variables/Variable.scss';
+
+.MovieSingleReview-section {
+    display: grid;
+    margin: 4rem 1rem 0 0;
+    background-color: $darkGreyColor;
+    border-radius: 0.7rem;
+    font-family: sans-serif;
+    color: $whiteColor;
+    >h2 {
+        margin-left: 2rem;
+    }
+}
+
+.commentScroller {
+    max-height: 48rem;
+}

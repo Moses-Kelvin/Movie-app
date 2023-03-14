@@ -1,0 +1,53 @@
+@import '../../Variables/Variable.scss';
+
+.comment {
+    display: grid;
+    grid-template-columns: 2fr 9fr;
+    color: $whiteColor;
+    background-color: black;
+    width: 90%;
+    justify-self: center;
+    margin-top: 1rem;
+    border-radius: 0.6rem;
+    font-family: sans-serif;
+    padding-bottom: 1rem;
+
+    >div:nth-child(2)>p {
+        margin-top: 0.2rem;
+        max-width: 90%;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        color: $textColor;
+        text-align: justify;
+        text-justify: inter-word;
+    }
+}
+
+.view-replies {
+    justify-self: end;
+    padding-right: 3rem;
+    color: $blueColor;
+    text-decoration: none;
+}
+
+.reply {
+    width: 75%;
+    justify-self: end;
+
+    h4 {
+        font-size: 0.8rem;
+    }
+
+    h5 {
+        font-size: 0.65rem;
+    }
+}
+
+.comment-section {
+    display: grid;
+}
+
+.replies {
+    display: grid;
+    padding-right: 2rem;
+}

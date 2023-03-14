@@ -1,0 +1,130 @@
+@import '../../Variables/Variable.scss';
+
+.MovieRow-Container {
+  display: flex;
+  column-gap: 1rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  font-family: sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 0 2rem 0;
+  transition: all ease 0.5s;
+}
+
+
+
+.MovieRow {
+  margin-top: 3rem;
+  padding: 1rem 0;
+  color: $whiteColor;
+  width: 98vw;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  h1 {
+    padding-left: 1rem;
+    font-size: 1.7rem;
+    letter-spacing: 0.2rem;
+    font-family: sans-serif;
+  }
+}
+
+.MovieRow::-webkit-scrollbar {
+  display: none;
+}
+
+.movie {
+  height: fit-content;
+  background-color: $darkGreyColor;
+  border-radius: 0.5rem;
+  color: $whiteColor;
+  flex:  0 0 16rem;
+  position: relative;
+  overflow: hidden;
+
+  >img {
+    width: 20rem;
+    height: 18rem;
+    transition: transform 1s, filter 1.5s, ease-in-out;
+    transform-origin: center center;
+    object-fit: cover;
+  }
+
+  >img:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0 0.5rem;
+  }
+
+  h4 {
+    margin: 1rem 0 1rem 0.5rem;
+  }
+}
+
+.movie:hover img {
+  cursor: pointer;
+  filter: brightness(100%);
+  transform: scale(1.1);
+}
+
+.movie-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  >div:nth-child(2) {
+    display: flex;
+    column-gap: 0.7rem;
+    margin-right: 1rem;
+    align-items: center;
+    justify-self: flex-end;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    font-size: 1.1rem;
+  }
+
+}
+
+.readMore-btn {
+  position: absolute;
+  background-color: $redColor;
+  color: $whiteColor;
+  padding: 1rem 2rem;
+  top: 40%;
+  left: 0%;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: visibility 0s, opacity 0.5s linear;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+
+.movie:hover .readMore-btn {
+  visibility: visible;
+  opacity: 0.9;
+}
+
+@media (max-width: 500px) {
+  .MovieRow {
+    h1 {
+      font-size: 1rem;
+    }
+  }
+}
+ 

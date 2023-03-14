@@ -1,0 +1,104 @@
+@import '../../Variables/Variable.scss';
+
+.MoviesGrid-section {
+  padding: 0 0 5rem 2rem;
+  color: $whiteColor;
+}
+
+.MoviesGrid-header,
+.MoviesGrid-footer {
+  border-top: 0.1rem solid grey;
+  border-bottom: 0.1rem solid grey;
+}
+
+.MoviesGrid-header {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  margin-bottom: 2rem;
+  font-family: sans-serif;
+
+  >div:nth-child(2) {
+    display: flex;
+    column-gap: 2rem;
+    width: 100%;
+  }
+}
+
+.MovieGrid-formControl {
+  width: 70%;
+  background-color: $lightGreyColor;
+}
+
+.MovieGrid-sortBy {
+  border-right: 0.1rem solid grey;
+  padding-right: 1rem;
+}
+
+.MoviesGrid-footer {
+  margin-top: 2rem;
+}
+
+.MoviesGrid-container {
+  // max-height: 48rem;
+  width: 100%;
+}
+
+
+.MoviesGrid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 1.5rem;
+}
+
+.MoviesGrid-movie {
+  width: 12rem;
+
+  >img {
+    border-radius: 0.4rem 0.4rem 0 0;
+  }
+}
+
+.MuiPagination-root {
+  button {
+    color: white;
+  }
+}
+
+@media (max-width: 500px) {
+  .MoviesGrid-section {
+    padding-left: 0;
+  }
+
+  .MoviesGrid-container {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .MoviesGrid-movie {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+
+    >img {
+      width: 100%;
+    }
+  }
+
+  .MoviesGrid-header {
+    grid-template-columns: 1fr;
+
+    >div:nth-child(2) {
+      border-top: 0.1rem solid grey;
+    }
+  }
+
+  .MoviesGrid-footer, .MoviesGrid-header {
+    width: 90%;
+    margin: auto;
+  }
+
+  .MoviesGrid-footer {
+    margin-top: 2rem;
+    padding: 0.5rem 0 1rem 0;
+  }
+}

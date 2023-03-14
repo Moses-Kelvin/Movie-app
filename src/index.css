@@ -1,0 +1,82 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+#overlays {
+    display: grid;
+    justify-items: center;
+}
+
+.scroller {
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.scroller::-webkit-scrollbar {
+    display: none;
+    width: 10px;
+}
+
+.scroller::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(68, 65, 65);
+    border-radius: 10px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+    background: rgb(68, 65, 65);
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar {
+    display: block;
+}
+
+.scroll {
+    scrollbar-width: thin !important;
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .scroller {
+        overflow-y: overlay;
+    }
+}
+
+.horizontalScroll::-webkit-scrollbar {
+    display: block;
+    height: 0.6rem;
+  }
+  
+  .horizontalScroll::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(19, 19, 19);
+    border-radius: 0.5rem;
+  }
+  
+  .horizontalScroll::-webkit-scrollbar-thumb {
+    background: rgb(19, 19, 19);
+    border-radius: 0.5rem;
+  }
+  
+  .horizontalScroll{
+    scrollbar-width: thin !important;
+  }
+  
+  
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .horizontalScroll {
+        overflow-x: overlay;
+    }
+  }
+  

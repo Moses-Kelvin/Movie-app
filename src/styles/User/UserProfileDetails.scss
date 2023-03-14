@@ -1,0 +1,40 @@
+@import '../../Variables/Variable.scss';
+
+.UserProfileDetails-section {
+    color: $whiteColor;
+    font-family: sans-serif;
+}
+
+.UserProfileDetails-section_details {
+    border: 0.1rem solid grey;
+    border-radius: 0.6rem;
+    background-color: $darkGreyColor;
+    padding: 1rem 0 1rem 0;
+    width: 85%;
+    >div:nth-child(1), >div:nth-child(2), >div:nth-child(3), >div:nth-child(4){
+      background-color: rgb(34, 32, 32);
+      width: 100%;
+      margin: 1rem 0;
+    }
+    p {
+        color: $textColor;
+        padding: 0.5rem 0 0 1.5rem;
+    }
+    h3 {
+        font-size: 0.95rem;
+        padding: 0 0 1rem 1.5rem;
+        font-style: italic;
+    }
+}
+
+@media (max-width: 500px) {
+    .UserProfileDetails-section {
+      margin-top: 2rem;
+    }
+
+    .UserProfileDetails-section_details {
+        width: 100%;
+        border-radius: 0;
+    }
+}
+

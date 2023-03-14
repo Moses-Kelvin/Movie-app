@@ -1,0 +1,63 @@
+@import '../../Variables/Variable.scss';
+
+.footer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 4rem 0;
+    background-image: url(../../assets/images/slider-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: sans-serif;
+
+    p {
+        color: rgb(168, 161, 161);
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: $whiteColor;
+    }
+
+    h2 {
+        font-size: 1rem;
+        letter-spacing: 0.1rem;
+    }
+
+    >div:nth-child(1) {
+        margin-left: 4rem;
+    }
+}
+
+.footer-icons {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.footer-newsletter {
+    >p {
+        font-size: 0.9rem;
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+
+        >div:nth-child(1) {
+            margin-left: 0;
+        }
+    }
+
+    .footer-newsletter {
+        display: grid;
+        justify-items: center;
+
+        >p {
+            text-align: center;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+@import '../../Variables/Variable.scss';
+
+.User-section {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    padding-top: 8rem;
+    margin-bottom: 3rem;
+    h1 {
+        font-size: 3rem;
+        letter-spacing: 0.2rem;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: $textColor
+      }
+}
+
+@media (max-width: 500px) {
+  .User-section {
+    grid-template-columns: 1fr;
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    h2 {
+      color: $textColor;
+      font-family: sans-serif;
+      margin: 2rem 0 0 1rem;
+      letter-spacing: 0.2rem;
+    }
+  }
+}

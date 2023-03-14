@@ -1,0 +1,65 @@
+@import '../../Variables/Variable.scss';
+
+.MovieSingleMoreInfo-section {
+    color: $textColor;
+    border-left: 0.5rem solid $darkGreyColor;
+    font-family: sans-serif;
+    height: fit-content;
+    width: 95%;
+    margin-top: 6rem;
+    border-radius: 0.6rem;
+     h3 {
+        color: white;
+     }
+    >div:nth-child(1) {
+        padding: 2rem 0 0 2rem;
+    }
+}
+
+.genres {
+    display: flex;
+    column-gap: 1rem;
+    color: $whiteColor;
+}
+
+.SingleGenre {
+    background-color: orange;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.6rem;
+}
+
+.production-companies {
+    display: grid;
+    width: 80%;
+    background-color: grey;
+    border-radius: 0.5rem;
+    border-left: 0.5rem solid $darkGreyColor;
+}
+
+.company {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: black;
+    padding-left: 1rem;
+}
+
+.view-comment_btn {
+    background-color: $redColor;
+    color: $whiteColor;
+    margin: 2rem;
+}
+
+.view-comment_btn:hover {
+    opacity: 0.7;
+}
+
+@media (max-width: 500px) {
+    .MovieSingleMoreInfo-section {
+        margin-top: 1rem;
+        width: 90%;
+        margin: auto;
+    }
+}

@@ -1,0 +1,110 @@
+@import '../../Variables/Variable.scss';
+
+.navbar {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    align-items: center;
+    padding-top: 1rem;
+    color: $whiteColor;
+    background-color: $darkGreyColor;
+    width: 100%;
+    height: fit-content;
+    font-family: sans-serif;
+    position: fixed;
+    z-index: 10;
+
+    a {
+        color: $whiteColor;
+        text-decoration: none;
+    }
+
+    h1 {
+        font-weight: bold;
+        padding-left: 4rem;
+        color: $redColor;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    ul {
+        display: flex;
+        column-gap: 2rem;
+    }
+
+    li {
+        color: $whiteColor;
+        font-size: 1.2rem;
+        list-style: none;
+    }
+}
+
+.navbar-icons {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+    justify-self: end;
+    padding-right: 2rem;
+}
+
+.sign-up {
+    background-color: $redColor;
+    color: $whiteColor;
+}
+
+.log-in,
+.sign-up,
+.log-out {
+    font-size: 1rem;
+}
+
+.log-in:hover,
+.sign-up:hover,
+.log-out:hover {
+    opacity: 0.7;
+}
+
+.active {
+    position: relative;
+    text-transform: capitalize;
+}
+
+
+.active::after {
+    content: "";
+    position: absolute;
+    background-color: $redColor;
+    width: 100%;
+    bottom: -1.5rem;
+    left: 0;
+    height: 3px;
+    transition: width 150ms ease-in-out;
+}
+
+.unselected {
+    color: $whiteColor;
+    border: none;
+}
+ 
+
+@media (max-width: 500px) {
+    .navbar {
+        grid-template-columns: 1.5fr 5.5fr 3fr;
+
+        h1 {
+            padding-left: 1rem;
+            font-size: 1.2rem;
+        }
+    }
+
+    .navbar-icons {
+        padding-right: 1rem;
+        column-gap: 0.3rem;
+    }
+
+    .active::after {
+        content: "";
+        bottom: -1rem;
+    }
+}

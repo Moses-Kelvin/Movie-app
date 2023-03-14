@@ -1,0 +1,55 @@
+@import '../../Variables/Variable.scss';
+
+.ProfilePreview {
+    width: 25rem;
+    background-color: $darkGreyColor;
+    height: 28rem;
+    position: fixed;
+    z-index: 100;
+    margin-top: 5rem;
+    border-radius: 1rem;
+
+    >img {
+        width: 100%;
+        height: 80%;
+    }
+
+}
+
+.ProfilePreview-saveBtn {
+    background-color: $redColor;
+    color: $whiteColor;
+}
+
+.ProfilePreview-CancelBtn,
+.ProfilePreview-saveBtn {
+    padding: 0.9rem 3rem;
+    font-size: 1rem;
+}
+
+.ProfilePreview-CancelBtn:hover,
+.ProfilePreview-saveBtn:hover {
+    opacity: 0.6;
+}
+
+.ProfilePreview-btns {
+    display: flex;
+    column-gap: 2rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+@media (max-width: 500px) {
+    .ProfilePreview {
+        width: 22rem;
+
+        >img {
+            border-radius: 1rem 1rem 0 0;
+        }
+    }
+
+    .ProfilePreview-CancelBtn,
+    .ProfilePreview-saveBtn {
+        padding: 0.9rem 2.5rem;
+    }
+}
