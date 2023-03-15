@@ -10,13 +10,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const SingleReview = () => {
 
-    const [commentContent, setCommentContent] = useState("");
-    const [replyContent, setReplyContent] = useState("");
     const [movieComments, setMovieComments] = useState([]);
     const [editComment, setEditComment] = useState(false);
     const [editReply, setEditReply] = useState(false);
     const [commentID, setCommentID] = useState("");
     const [replyId, setReplyId] = useState("");
+    const [editSingleComment, setEditSingleComment] = useState(false);
+    const [userInput, setUserInput] = useState("");
 
     const { movieId, commentId } = useParams();
 
@@ -34,10 +34,20 @@ const SingleReview = () => {
         )
     }, [movieId]);
 
+    let NoOfComment;
+
+    if (movieComments.length === 0) {
+        NoOfComment = "No Comment"
+    } else if (movieComments.length === 1) {
+          NoOfComment = "01 Comment"
+    } else {
+        NoOfComment = `0${movieComments.length} Comments`
+    }
+
 
     const comments = (
         <section className="MovieSingleReview-section">
-            <h2>06 Comments</h2>
+            <h2>{NoOfComment}</h2>
             <div className="scroller commentScroller">
                 {movieComments.map(comment => (
                     <Comment
@@ -46,32 +56,34 @@ const SingleReview = () => {
                         name={comment.data.name}
                         imgUrl={comment.data.imgUrl}
                         id={comment.id}
-                        setCommentContent={setCommentContent}
+                        setUserInput={setUserInput}
                         setCommentID={setCommentID}
                         setEditComment={setEditComment}
                     />
                 ))}
             </div>
             {user && <TextArea placeHolder="Write a comment..."
-                action={editComment ? "Update" : "Comment"}
-                commentContent={commentContent}
+                action={editComment || editSingleComment ? "Update" : "Comment"}
+                userInput={userInput}
+                setUserInput={setUserInput}
                 id={commentID}
-                setEditComment={setEditComment}
-                setCommentContent={setCommentContent} />}
+                setEditComment={setEditComment} />}
         </section>
     );
 
     const Replies = (
         <section className="MovieSingleReview-section">
             <div className="scroller commentScroller">
-                <ViewReplies  setEditReply={setEditReply} 
-                  setReplyContent={setReplyContent} 
-                setReplyId={setReplyId} />
+                <ViewReplies setEditReply={setEditReply}
+                    setUserInput={setUserInput}
+                    setEditSingleComment={setEditSingleComment}
+                    setReplyId={setReplyId} />
             </div>
             {user && <TextArea placeHolder="Write a reply..."
-                action={editReply ? "Done" : "Reply"}
-                replyContent={replyContent}
-                setReplyContent={setReplyContent}
+                action={editReply ? "Done" : editSingleComment ? "Update" : "Reply"}
+                userInput={userInput}
+                setEditSingleComment={setEditSingleComment}
+                setUserInput={setUserInput}
                 replyId={replyId}
                 setEditReply={setEditReply}
             />}

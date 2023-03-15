@@ -3,17 +3,14 @@ import CommentHeader from "./CommentHeader";
 import '../../../styles/SingleReview/Comment.scss';
 import Votes from "./Votes";
 import Replies from "../Reply/Replies";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const Comment = (props) => {
 
-    const { userComment, name, imgUrl, id, setCommentContent, setReplyContent,
-        setEditComment, setCommentID, setEditReply, setReplyId } = props;
+    const { userComment, name, imgUrl, id, setUserInput, setEditComment,
+        setCommentID, setEditReply, setReplyId } = props;
 
-    const { pathname } = useLocation();
-    console.log(pathname)
-
-    // const arr = ['1', '2', '3']
+    const { movieId } = useParams();
 
     return (
         <div className="comment-section">
@@ -24,9 +21,8 @@ const Comment = (props) => {
                         name={name}
                         imgUrl={imgUrl}
                         id={id}
-                        setCommentContent={setCommentContent}
                         setCommentID={setCommentID}
-                        setReplyContent={setReplyContent}
+                        setUserInput={setUserInput}
                         setEditComment={setEditComment}
                         setEditReply={setEditReply}
                         setReplyId={setReplyId}
@@ -35,7 +31,7 @@ const Comment = (props) => {
                     <p>{userComment}</p>
                 </div>
             </div>
-            <Link className="view-replies">
+            <Link to={`/Movies/${movieId}/comments/${id}`} className="view-replies">
                 <p>view replies</p>
             </Link>
         </div>

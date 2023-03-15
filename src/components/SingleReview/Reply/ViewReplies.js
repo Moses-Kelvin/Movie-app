@@ -3,39 +3,42 @@ import Votes from "../Comment/Votes";
 import CommentHeader from "../Comment/CommentHeader";
 import Replies from "./Replies";
 import '../../../styles/SingleReview/Comment.scss';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, orderBy } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useParams } from "react-router-dom";
 
 
-const ViewReplies = ({ setEditReply, setReplyId, setReplyContent }) => {
+const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput }) => {
 
     const [currentComment, setCurrentComment] = useState("");
 
     const { commentId, movieId } = useParams();
 
-
     useEffect(() => {
-        const getCurrentComment = async () => {
-            const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}`);
-            const docSnap = await getDoc(docRef);
-            setCurrentComment(docSnap.data())
-        };
-        getCurrentComment();
+        onSnapshot(doc(db, `Movies/${movieId}/Comments/${commentId}`), orderBy(
+            'timestamp', 'asc'), (snapshot) => {
+                setCurrentComment(snapshot.data())
+            }
+        )
     }, [commentId]);
+
+
 
     return (
         <div className="comment-section">
             <div className="comment">
                 <Votes />
                 <div>
-                    <CommentHeader name={currentComment.name}
+                    <CommentHeader type="singleComment"
+                        setEditSingleComment={setEditSingleComment}
+                        setUserInput={setUserInput}
+                        name={currentComment.name}
                         imgUrl={currentComment.imgUrl} />
                     <p>{currentComment.comment}</p>
                 </div>
             </div>
             <Replies setEditReply={setEditReply}
-                setReplyContent={setReplyContent}
+                setUserInput={setUserInput}
                 setReplyId={setReplyId} />
         </div>
     )

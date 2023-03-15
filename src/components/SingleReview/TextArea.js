@@ -12,8 +12,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const TextArea = (props) => {
 
-    const { placeHolder, action, commentContent, setCommentContent, setEditComment, id, 
-        replyContent, setReplyContent, replyId, setEditReply } = props;
+    const { placeHolder, action, setEditComment, id, setUserInput, setEditSingleComment,
+        userInput, replyContent, replyId, setEditReply } = props;
 
     const [user] = useAuthState(auth);
 
@@ -23,41 +23,46 @@ const TextArea = (props) => {
 
     const sendMessage = async () => {
         if (action === "Comment") {
+            setUserInput("");
             await addDoc(collection(db, "Movies", movieId, "Comments"), {
                 name: userData?.data.name,
                 imgUrl: userData?.data.imgUrl,
                 vote: 0,
-                comment: commentContent,
+                comment: userInput,
                 sentAt: serverTimestamp()
             });
-            setCommentContent("");
         } else if (action === "Update") {
-            setEditComment(false);
-            setCommentContent("");
-            const commentRef = doc(db, `Movies/${movieId}/Comments/${id}`);
+            let commentRef;
+            if (commentId) {
+                setEditSingleComment(false)
+                commentRef = doc(db, `Movies/${movieId}/Comments/${commentId}`)
+            } else {
+                setEditComment(false);
+                commentRef = doc(db, `Movies/${movieId}/Comments/${id}`)
+            }
+            setUserInput("")
             await updateDoc(commentRef, {
-                comment: commentContent
+                comment: userInput
             })
         } else if (action === "Reply") {
-            setReplyContent("");
+            setUserInput("")
             await addDoc(collection(db, "Movies", movieId, "Comments", commentId, "Replies"), {
                 name: userData?.data.name,
                 imgUrl: userData?.data.imgUrl,
                 vote: 0,
-                reply: replyContent,
+                reply: userInput,
                 sentAt: serverTimestamp()
             });
         } else if (action === "Done") {
             setEditReply(false);
-            setReplyContent("");
+            setUserInput("")
             const ReplyRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
             await updateDoc(ReplyRef, {
-                reply: replyContent
+                reply: userInput
             })
         }
     };
 
-    console.log(replyContent);
 
     return (
         <div className="textArea">
@@ -68,11 +73,9 @@ const TextArea = (props) => {
                     id="standard-basic"
                     placeholder={`${placeHolder}`}
                     textColor="white"
-                    Width="90%"    
-                    value={action === "Comment" || action === "Update" ? commentContent : replyContent}
-                    onChange={action === "Comment" || action === "Update" ? (e) => setCommentContent(e.target.value) :
-                        (e) => setReplyContent(e.target.value)
-                    }
+                    Width="90%"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
                     variant="standard" />
             </div>
             <div>
@@ -83,5 +86,6 @@ const TextArea = (props) => {
         </div>
     )
 };
+ 
 
 export default memo(TextArea);

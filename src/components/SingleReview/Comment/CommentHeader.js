@@ -3,17 +3,20 @@ import { Avatar } from "@mui/material";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import '../../../styles/SingleReview/CommentHeader.scss';
 
 const CommentHeader = (props) => {
 
-    const { avatarWidth, avatarHeight, iconSize, setCommentID, type, replyId, setReplyContent,
-    sentAt, name, imgUrl, id, setCommentContent, setEditComment, setEditReply, setReplyId } = props
+    const { avatarWidth, avatarHeight, iconSize, setCommentID, type, replyId, 
+        sentAt, name, imgUrl, id,  setEditComment, setEditReply, setReplyId,
+        setUserInput, setEditSingleComment } = props
 
     const { movieTitle, commentId, movieId } = useParams();
+
+    const navigate = useNavigate();
 
     const [user] = useAuthState(auth);
 
@@ -24,8 +27,12 @@ const CommentHeader = (props) => {
             if (type === "comment") {
                 const docRef = doc(db, `Movies/${movieId}/Comments/${id}`);
                 await deleteDoc(docRef);
-            } else {
+            } else if (type === "reply") {
                 const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
+                await deleteDoc(docRef);
+            } else if (type === "singleComment") {
+                navigate(`Movies/${movieId}/Comments`);
+                const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}`);
                 await deleteDoc(docRef);
             }
         } catch (e) {
@@ -37,15 +44,20 @@ const CommentHeader = (props) => {
         if (type === "comment") {
             setEditComment(true);
             setCommentID(id);
-            const docRef = doc(db, `Movies/${movieId}/Comments/${id}`);
+            const docRef = doc(db, `Movies/${movieId}/Comments/${id}`)
             const docSnap = await getDoc(docRef);
-            setCommentContent(docSnap.data().comment)
+            setUserInput(docSnap.data().comment);
         } else if (type === "reply") {
             setEditReply(true);
             setReplyId(replyId);
             const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
             const docSnap = await getDoc(docRef);
-            setReplyContent(docSnap.data().reply)
+            setUserInput(docSnap.data().reply)
+        } else if (type === "singleComment") {
+            setEditSingleComment(true);
+            const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}`);
+            const docSnap = await getDoc(docRef);
+            setUserInput(docSnap.data().comment);
         }
     };
 

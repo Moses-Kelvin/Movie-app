@@ -6,7 +6,7 @@ import '../../../styles/SingleReview/Comment.scss';
 import Reply from "./Reply";
 
 
-const Replies = ({setEditReply, setReplyId, setReplyContent}) => {
+const Replies = ({setEditReply, setReplyId, setUserInput}) => {
 
     const [replies, setReplies] = useState([]);
 
@@ -34,7 +34,7 @@ const Replies = ({setEditReply, setReplyId, setReplyContent}) => {
                     replyId={reply.id}
                     setEditReply={setEditReply}
                     setReplyId={setReplyId}
-                    setReplyContent={setReplyContent}
+                    setUserInput={setUserInput}
                 />
             )}
         </div>
