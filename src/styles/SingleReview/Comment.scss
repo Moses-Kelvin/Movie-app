@@ -24,10 +24,10 @@
 }
 
 .view-replies {
-    justify-self: end;
-    padding-right: 3rem;
-    color: $blueColor;
+    padding-left: 5rem;
+    color: $whiteColor;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .reply {
@@ -50,4 +50,31 @@
 .replies {
     display: grid;
     padding-right: 2rem;
+}
+
+.singleReply {
+   display: flex;
+   column-gap: 1rem;
+   align-items: center;
+   padding-left: 5rem;
+   padding-top: 0.5rem;
+   img {
+    height: 1.3rem;
+    width: 1.3rem;
+    border-radius: 50%;
+   }
+   p {
+    margin: 0;
+    font-weight: lighter;
+    font-size: 0.9rem;
+   }
+   h4 {
+    margin: 0.4rem;
+   }
+}
+
+.singleReply-username {
+    text-decoration: none;
+    color: $whiteColor;
+    font-weight: bold;
 }

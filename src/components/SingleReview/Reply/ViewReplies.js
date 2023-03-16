@@ -8,7 +8,7 @@ import { db } from "../../../firebase";
 import { useParams } from "react-router-dom";
 
 
-const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput }) => {
+const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput, replies,setReplies }) => {
 
     const [currentComment, setCurrentComment] = useState("");
 
@@ -37,7 +37,10 @@ const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserIn
                     <p>{currentComment.comment}</p>
                 </div>
             </div>
-            <Replies setEditReply={setEditReply}
+            <Replies
+                replies={replies}
+                setReplies={setReplies}
+                setEditReply={setEditReply}
                 setUserInput={setUserInput}
                 setReplyId={setReplyId} />
         </div>

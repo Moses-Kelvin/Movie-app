@@ -8,8 +8,10 @@ import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+
 const SingleReview = () => {
 
+    const [replies, setReplies] = useState([]);
     const [movieComments, setMovieComments] = useState([]);
     const [editComment, setEditComment] = useState(false);
     const [editReply, setEditReply] = useState(false);
@@ -34,12 +36,13 @@ const SingleReview = () => {
         )
     }, [movieId]);
 
+
     let NoOfComment;
 
     if (movieComments.length === 0) {
         NoOfComment = "No Comment"
     } else if (movieComments.length === 1) {
-          NoOfComment = "01 Comment"
+        NoOfComment = "01 Comment"
     } else {
         NoOfComment = `0${movieComments.length} Comments`
     }
@@ -74,7 +77,10 @@ const SingleReview = () => {
     const Replies = (
         <section className="MovieSingleReview-section">
             <div className="scroller commentScroller">
-                <ViewReplies setEditReply={setEditReply}
+                <ViewReplies
+                    replies={replies}
+                    setReplies={setReplies}
+                    setEditReply={setEditReply}
                     setUserInput={setUserInput}
                     setEditSingleComment={setEditSingleComment}
                     setReplyId={setReplyId} />

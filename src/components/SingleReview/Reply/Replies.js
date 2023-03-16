@@ -6,9 +6,9 @@ import '../../../styles/SingleReview/Comment.scss';
 import Reply from "./Reply";
 
 
-const Replies = ({setEditReply, setReplyId, setUserInput}) => {
+const Replies = ({setEditReply, setReplyId, setUserInput, replies, setReplies}) => {
 
-    const [replies, setReplies] = useState([]);
+    // const [replies, setReplies] = useState([]);
 
     const { commentId, movieId } = useParams();
 
@@ -21,7 +21,7 @@ const Replies = ({setEditReply, setReplyId, setUserInput}) => {
                 })))
             }
         )
-    }, [commentId]);
+    }, [commentId, movieId, setReplies]);
 
     return (
         <div className="replies">
