@@ -9,6 +9,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../../firebase";
 import { Movie, Tv, Newspaper, Home, MoreVert } from "@mui/icons-material";
 import NavbarMenu from "./NavbarMenu";
+import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 
 const Navbar = () => {
 
@@ -16,6 +17,9 @@ const Navbar = () => {
     const [searchIsVisible, setSearchIsVisible] = useState(false);
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
+
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
+
 
     const theme = useTheme();
     const showNavItems = useMediaQuery(theme.breakpoints.up('sm'));
@@ -71,7 +75,8 @@ const Navbar = () => {
                 <div className="navbar-icons">
                     <Search sx={{ fontSize: '30px' }} onClick={() => setSearchIsVisible(true)} />
                     {user && <Link to='/User/kelvin'>
-                        {showNavItems && <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />}
+                        {showNavItems && (currentUser?.data.imgUrl ?<img src={currentUser?.data.imgUrl} alt = "" />
+                    : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />)}
                     </Link>}
                     {(!user && showNavItems) && <Link to='/LogIn'>
                         <Button className='log-in'>Log In</Button>

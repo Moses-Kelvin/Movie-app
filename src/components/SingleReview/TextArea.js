@@ -13,7 +13,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const TextArea = (props) => {
 
     const { placeHolder, action, setEditComment, id, setUserInput, setEditSingleComment,
-        userInput, replyContent, replyId, setEditReply } = props;
+        userInput, replyId, setEditReply } = props;
 
     const [user] = useAuthState(auth);
 

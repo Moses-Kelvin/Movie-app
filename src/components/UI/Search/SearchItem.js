@@ -1,14 +1,13 @@
 import React from "react";
-import interceptor from "../../../assets/images/interceptor.jpg";
 import "../../../styles/UI/Search/SearchItem.scss";
 
-const SearchItem = () => {
+const SearchItem = ({title, img, overview}) => {
     return (
         <div className="searchItem">
-            <img src={interceptor} />
+            <img src={`https://image.tmdb.org/t/p/w500${img}`} alt="" />
             <div>
-                <h3>interceptor</h3>
-                <p>When M which tends to bring the ship back to its upright position...</p>
+                <h3>{`${title.slice(0,50)}...`}</h3>
+                <p>{`${overview.slice(0,40)}...`}</p>
             </div>
         </div>
     )

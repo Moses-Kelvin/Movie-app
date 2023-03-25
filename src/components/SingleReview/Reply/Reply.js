@@ -6,7 +6,7 @@ import Votes from "../Comment/Votes";
 const Reply = ({userReply, name, imgUrl, replyId, setEditReply,setReplyId, setUserInput}) => {
     return (
         <div className="comment reply">
-            <Votes className="reply-votes"/>
+            <Votes className="reply-votes" replyId={replyId} type="reply"/>
             <div>
                 <CommentHeader 
                     name={name}

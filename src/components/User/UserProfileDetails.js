@@ -17,11 +17,11 @@ const UserProfileDetails = ({ data }) => {
                 </div>
                 <div>
                     <p>Country</p>
-                    <h3>Nigeria</h3>
+                    <h3>{data?.country}</h3>
                 </div>
                 <div>
                     <p>State</p>
-                    <h3>Lagos</h3>
+                    <h3>{data?.state}</h3>
                 </div>
             </div>
         </section>

@@ -23,7 +23,8 @@ const MovieRow = ({ movieHeader, MoviesDiscoverData }) => {
                                                 <h2>{data.title}</h2>
                                                 <div className="movie-info">
                                                         <h4>
-                                                                { data.release_date ? data.release_date.split("-")[0] : data.first_air_date.split("-")[0]}
+                                                                {data.release_date ? new Date(data.release_date).getFullYear() :
+                                                                        new Date(data.first_air_date).getFullYear()}
                                                         </h4>
                                                         <div>
                                                                 <Favorite sx={{ fontSize: '22px' }} />

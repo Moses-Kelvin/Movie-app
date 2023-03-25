@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const NavbarMenu = ({ anchor, setAnchor, logUserOut, user }) => {
 
-    const { data } = useFetchUserDataQuery(user?.uid);
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     const linkStyle = {
         textDecoration: 'none',
@@ -15,7 +15,7 @@ const NavbarMenu = ({ anchor, setAnchor, logUserOut, user }) => {
 
     const options = [
         {
-            action: data?.data.name,
+            action: currentUser?.data.name,
             icon: <AccountCircle sx={{ fontSize: "3rem" }} />
         },
         user ? {

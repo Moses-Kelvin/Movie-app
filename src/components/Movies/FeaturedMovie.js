@@ -6,12 +6,20 @@ import { Link } from "react-router-dom";
 import { useGetTrendingMoviesQuery } from "../../store/features/moviesApiSlice";
 import moviesGenre from "../../utils/GenreData";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 
 
 const FeaturedMovie = () => {
 
     const [index, setIndex] = useState(0);
     const timeoutRef = useRef(null);
+
+    const [user] = useAuthState(auth);
+
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     const theme = useTheme();
     const showDots = useMediaQuery(theme.breakpoints.up('sm'));
@@ -38,6 +46,16 @@ const FeaturedMovie = () => {
         };
     }, [index, trendingMoviesResult.results.length]);
 
+    const addToFav = async (title, releaseDate, rating, imgUrl) => {
+        await addDoc(collection(db, "users", currentUser?.docId, "Favourites"), {
+            title,
+            releaseDate,
+            rating,
+            imgUrl,
+            sentAt: serverTimestamp()
+        });
+    }
+
 
     return (
         <div className="featuredMovie-slideshow">
@@ -56,12 +74,12 @@ const FeaturedMovie = () => {
                             <h1>{movie.title}</h1>
                             <div className="featuredMovie_info">
                                 <div>
-                                    <p>Year: {movie.release_date.split("-")[0]}</p>
-                                   {showDots && <Circle sx={{ fontSize: '8px' }} />}
+                                    <p>Year: {new Date(movie.release_date).getFullYear()}</p>
+                                    {showDots && <Circle sx={{ fontSize: '8px' }} />}
                                 </div>
                                 <div>
                                     <p>Rating: {movie.vote_average}</p>
-                                   {showDots && <Circle sx={{ fontSize: '8px' }} />}
+                                    {showDots && <Circle sx={{ fontSize: '8px' }} />}
                                 </div>
                                 <div>
                                     <p>Popularity: {movie.popularity}</p>
@@ -75,7 +93,10 @@ const FeaturedMovie = () => {
                                         More Detail
                                     </Button>
                                 </Link>
-                                <Button className='featuredMovie-add_btn'>
+                                <Button className='featuredMovie-add_btn'
+                                    handleClick={() =>
+                                        addToFav(movie.title, movie.release_date, movie.vote_average, movie.poster_path)
+                                    }>
                                     {<AddCircleOutline />} ADD TO FAVOURITE
                                 </Button>
                             </div>

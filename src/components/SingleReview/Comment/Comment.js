@@ -38,13 +38,13 @@ const Comment = (props) => {
                 })))
             }
         )
-    }, [id]);
+    }, [id, movieId]);
 
 
     return (
         <div className="comment-section">
             <div className="comment">
-                <Votes username={name} id={id}/>
+                <Votes username={name} id={id} type="commentVote"/>
                 <div>
                     <CommentHeader
                         name={name}

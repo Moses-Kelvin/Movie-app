@@ -15,3 +15,12 @@
 .commentScroller {
     max-height: 48rem;
 }
+
+.NoComment {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    h3 {
+        margin-top: 0;
+    }
+}

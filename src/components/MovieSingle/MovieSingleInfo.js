@@ -22,7 +22,7 @@ const MovieSingleInfo = () => {
         <section className="MovieSingleInfo_section">
             <div>
                 <h1>{singleMovieResult.original_title}</h1>
-                <p>{singleMovieResult.release_date.split("-")[0]}</p>
+                <p>{new Date(singleMovieResult.release_date).getFullYear()}</p>
             </div>
             <img src={`https://image.tmdb.org/t/p/w1280${singleMovieResult.backdrop_path}`} alt="" />
             <div className="MovieSingleInfo_info">

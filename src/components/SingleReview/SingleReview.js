@@ -7,11 +7,12 @@ import ViewReplies from "./Reply/ViewReplies";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Forum } from "@mui/icons-material";
+import ReviewSpinner from "../UI/Spinners/ReviewSpinner";
 
 
 const SingleReview = () => {
 
-    const [replies, setReplies] = useState([]);
     const [movieComments, setMovieComments] = useState([]);
     const [editComment, setEditComment] = useState(false);
     const [editReply, setEditReply] = useState(false);
@@ -19,8 +20,8 @@ const SingleReview = () => {
     const [replyId, setReplyId] = useState("");
     const [editSingleComment, setEditSingleComment] = useState(false);
     const [userInput, setUserInput] = useState("");
-
-    const { movieId, commentId } = useParams();
+    
+    const { movieId } = useParams();
 
     const [user] = useAuthState(auth);
 
@@ -43,28 +44,38 @@ const SingleReview = () => {
         NoOfComment = "No Comment"
     } else if (movieComments.length === 1) {
         NoOfComment = "01 Comment"
-    } else {
+    } else if (movieComments.length <= 9 && movieComments.length !== 1) {
         NoOfComment = `0${movieComments.length} Comments`
+    } else {
+        NoOfComment = `${movieComments.length} Comments`
     }
+
+    const NoComment = (
+        <div className="NoComment">
+            <Forum sx={{ fontSize: '15rem' }} />
+            <h3>Be the first to comment</h3>
+        </div>
+    );
 
 
     const comments = (
         <section className="MovieSingleReview-section">
             <h2>{NoOfComment}</h2>
-            <div className="scroller commentScroller">
-                {movieComments.map(comment => (
-                    <Comment
-                        key={comment.id}
-                        userComment={comment.data.comment}
-                        name={comment.data.name}
-                        imgUrl={comment.data.imgUrl}
-                        id={comment.id}
-                        setUserInput={setUserInput}
-                        setCommentID={setCommentID}
-                        setEditComment={setEditComment}
-                    />
-                ))}
-            </div>
+                <div className="scroller commentScroller">
+                    {movieComments.map(comment => (
+                        <Comment
+                            key={comment.id}
+                            userComment={comment.data.comment}
+                            name={comment.data.name}
+                            imgUrl={comment.data.imgUrl}
+                            id={comment.id}
+                            setUserInput={setUserInput}
+                            setCommentID={setCommentID}
+                            setEditComment={setEditComment}
+                        />
+                    ))}
+                </div>
+            {movieComments.length === 0 && NoComment}
             {user && <TextArea placeHolder="Write a comment..."
                 action={editComment || editSingleComment ? "Update" : "Comment"}
                 userInput={userInput}
@@ -78,8 +89,6 @@ const SingleReview = () => {
         <section className="MovieSingleReview-section">
             <div className="scroller commentScroller">
                 <ViewReplies
-                    replies={replies}
-                    setReplies={setReplies}
                     setEditReply={setEditReply}
                     setUserInput={setUserInput}
                     setEditSingleComment={setEditSingleComment}

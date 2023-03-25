@@ -14,13 +14,13 @@ const CommentHeader = (props) => {
         sentAt, name, imgUrl, id,  setEditComment, setEditReply, setReplyId,
         setUserInput, setEditSingleComment } = props
 
-    const { movieTitle, commentId, movieId } = useParams();
+    const { commentId, movieId } = useParams();
 
     const navigate = useNavigate();
 
     const [user] = useAuthState(auth);
 
-    const { data } = useFetchUserDataQuery(user?.uid);
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     const deleteReview = async (id, replyId) => {
         try {
@@ -74,11 +74,11 @@ const CommentHeader = (props) => {
                 <Link to={`/Movies/${movieId}/comments/${id}`}>
                     {type === "comment" && <Reply sx={{ color: 'blue', fontSize: iconSize }} />}
                 </Link>
-                {data?.data.name === name ?
+                {currentUser?.data.name === name ?
                     <Edit onClick={() => editReview(id, replyId)}
                         sx={{ color: 'blue', fontSize: iconSize }} /> :
                     undefined}
-                {data?.data.name === name ?
+                {currentUser?.data.name === name ?
                     <Delete onClick={() => deleteReview(id, replyId)}
                         sx={{ color: 'red', fontSize: iconSize }} /> :
                     undefined}

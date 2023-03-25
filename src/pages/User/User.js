@@ -14,19 +14,19 @@ const User = () => {
 
     const [user] = useAuthState(auth);
 
-    const { data } = useFetchUserDataQuery(user?.uid);
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     const theme = useTheme();
     const mobileScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
-    const profileName = <h1>{data?.data.name} PROFILE</h1>;
+    const profileName = <h1>{currentUser?.data.name} PROFILE</h1>;
 
-    // console.log(docId)
+    console.log(currentUser)
 
     const { userName } = useParams();
 
     const element = useRoutes([
-        { index: true, element: <UserProfileDetails data={data?.data} /> },
+        { index: true, element: <UserProfileDetails data={currentUser?.data} /> },
         { path: 'Favourite-Movies', element: <UserFavouriteMovies /> },
         { path: '*', element: <Navigate to={`/User/${userName}`} /> }
     ]);

@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
 import '../../styles/User/UserProfile.scss';
 import { Avatar } from '@mui/material';
-import Button from "../UI/Button";
 import { AddAPhoto, Settings } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import ProfilePreview from "../UI/ProfilePreview";
-import { useGetSingleMovieQuery } from "../../store/features/moviesApiSlice";
+ 
 
 const UserProfile = () => {
 
     const [file, setFile] = useState("");
 
-
     const [user] = useAuthState(auth);
 
-    const { data, refetch } = useFetchUserDataQuery(user?.uid);
-    console.log(data?.docId)
+    const { data: currentUser, refetch } = useFetchUserDataQuery(user?.uid);
+    console.log(currentUser?.docId)
 
     const [photoUrl, setPhotoUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
@@ -33,19 +31,19 @@ const UserProfile = () => {
 
     useEffect(() => {
         const updatePhoto = async () => {
-            const userRef = doc(db, "users", data?.docId);
+            const userRef = doc(db, "users", currentUser?.docId);
             await updateDoc(userRef, {
                 imgUrl: photoUrl
             })
         }
         if (photoUrl !== null) { updatePhoto(); }
-    }, [photoUrl, data?.docId])
+    }, [photoUrl, currentUser?.docId])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-         
+
         if (!file) return;
-        
+
         const storageRef = ref(storage, `files/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -64,42 +62,24 @@ const UserProfile = () => {
                 });
             }
         );
-
-        
-        //   const commentsSnap =  getDocs(collection(db, "Movies", movieName, "Comments"));
-        //     commentsSnap.docs.map((doc) => ({
-        //                 id: doc.id,
-        //                 data: doc.data(),
-        //  })));
-            
-
-    }
+    };
 
     const handleFileChange = (e) => {
         console.log(e.target.files[0])
         setFile(e.target.files[0]);
     };
 
-    // const { movieId } = useParams();
-
-    // const { data: movieData } = useGetSingleMovieQuery(movieId);
-
-    // const movieName = movieData?.original_title;
-
-    // const commentsSnap =  getDocs(collection(db, `Movies/${movieName}/Comments`));
-    // console.log(commentsSnap.docs.map(doc => {
-    //      console.log(doc.data())
-    // }))
 
     const params = useParams();
     console.log(params);
 
     return (
         <>
-           {file && <ProfilePreview file={file} handleSubmit={handleSubmit} onClose={()=> setFile(null)} />}
+            {file && <ProfilePreview file={file} handleSubmit={handleSubmit} onClose={() => setFile(null)} />}
             <section className="userProfile-section">
                 <div className="userProfile-avatar">
-                    {data?.data.imgUrl ? <img className="userImg" src={data?.data.imgUrl} alt="" /> :
+                    {currentUser?.data.imgUrl ?
+                        <img className="userImg" src={currentUser?.data.imgUrl} alt="" /> :
                         <Avatar sx={{ width: '8rem', height: '8rem' }} />}
                     <label htmlFor="fileInput">
                         <div className="addAPhoto">

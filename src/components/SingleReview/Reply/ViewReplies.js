@@ -8,7 +8,7 @@ import { db } from "../../../firebase";
 import { useParams } from "react-router-dom";
 
 
-const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput, replies,setReplies }) => {
+const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput }) => {
 
     const [currentComment, setCurrentComment] = useState("");
 
@@ -20,14 +20,14 @@ const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserIn
                 setCurrentComment(snapshot.data())
             }
         )
-    }, [commentId]);
+    }, [commentId, movieId]);
 
 
 
     return (
         <div className="comment-section">
             <div className="comment">
-                <Votes />
+                <Votes type="singleCommentVote"/>
                 <div>
                     <CommentHeader type="singleComment"
                         setEditSingleComment={setEditSingleComment}
@@ -38,8 +38,6 @@ const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserIn
                 </div>
             </div>
             <Replies
-                replies={replies}
-                setReplies={setReplies}
                 setEditReply={setEditReply}
                 setUserInput={setUserInput}
                 setReplyId={setReplyId} />
