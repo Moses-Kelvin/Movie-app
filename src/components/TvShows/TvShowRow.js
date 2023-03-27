@@ -16,7 +16,7 @@ const TvShowRow = ({ movieHeader, MoviesDiscoverData }) => {
                         {MoviesDiscoverData.map((data, index) =>
                                 <div className="movie" key={index}>
                                         <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt="" />
-                                        <Link to="/TvShows/wednessday">
+                                        <Link to={`/TvShows/${data.id}`}>
                                                 <Button className="readMore-btn">Read More</Button>
                                         </Link>
                                         <div>

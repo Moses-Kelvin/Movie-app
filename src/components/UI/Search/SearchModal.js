@@ -4,7 +4,7 @@ import '../../../styles/UI/Search/SearchModal.scss';
 import { KeyboardBackspace, Search } from '@mui/icons-material';
 import InputField from "../InputField";
 import SearchItem from "./SearchItem";
-import { async } from "@firebase/util";
+import ReviewSpinner from "../Spinners/ReviewSpinner";
 
 
 export const BackDrop = () => {
@@ -15,7 +15,7 @@ export const BackDrop = () => {
 const SearchModalOverlay = ({ setSearchIsVisible }) => {
 
     const [suggestions, setSuggestions] = useState("");
-
+    
     const debounce = (func) => {
         let timer;
         return function (...args) {
@@ -32,9 +32,9 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
 
     const handleChange = (value) => {
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${value}`).then(
-            (res) => res.json()).then((json) =>  setSuggestions(json.results))
+            (res) => res.json()).then((json) => setSuggestions(json.results));
     };
-    
+
 
     const optimizedFn = useCallback(debounce(handleChange), []);
 
@@ -51,20 +51,24 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
                     iconStart={<Search sx={{ color: 'white' }} />}
                     textColor='white' Width='100%' />
             </div>
-            {suggestions.length > 0 &&
-                <div className="searchItems">
-                    {
-                        suggestions.map((el, id) => (
-                            <SearchItem
-                                key={id}
-                                title={el.title}
-                                overview={el.overview}
-                                img={el.poster_path}
-                            />
-                        ))
-                    }
-                </div>
-            }
+            <div className="searchModal-container">
+                {suggestions.length > 0 &&
+                    <div className="searchItems">
+                        {
+                            suggestions.map((el, id) => (
+                                <SearchItem
+                                    key={id}
+                                    title={el.title}
+                                    id={el.id}
+                                    overview={el.overview}
+                                    img={el.poster_path}
+                                    setSearchIsVisible={setSearchIsVisible}
+                                />
+                            ))
+                        }
+                    </div>
+                }
+            </div>
         </div>
     )
 };

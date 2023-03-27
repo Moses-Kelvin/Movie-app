@@ -6,15 +6,18 @@ import { Link } from "react-router-dom";
 import { useGetTrendingMoviesQuery } from "../../store/features/moviesApiSlice";
 import moviesGenre from "../../utils/GenreData";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
+import AddedToFavourite from "../UI/AddedToFavourite";
 
 
 const FeaturedMovie = () => {
 
     const [index, setIndex] = useState(0);
+    const [addedToFav, setAddedTofav] = useState(false);
+    const [popUpMsg, setPopUpMsg] = useState("");
     const timeoutRef = useRef(null);
 
     const [user] = useAuthState(auth);
@@ -47,14 +50,36 @@ const FeaturedMovie = () => {
     }, [index, trendingMoviesResult.results.length]);
 
     const addToFav = async (title, releaseDate, rating, imgUrl) => {
-        await addDoc(collection(db, "users", currentUser?.docId, "Favourites"), {
-            title,
-            releaseDate,
-            rating,
-            imgUrl,
-            sentAt: serverTimestamp()
+        const colRef = collection(db, `users/${currentUser?.docId}/Favourites`);
+        const docs = await getDocs(colRef);
+        docs.docs.forEach(doc => {
+            // try {
+            if (doc.data().title === title) {
+                setPopUpMsg("Movie already added to favourie");
+                setAddedTofav(true);
+            } else {
+                setPopUpMsg("❤️ Added to favourite!");
+                setAddedTofav(true);
+                 addDoc(collection(db, "users", currentUser?.docId, "Favourites"), {
+                    title,
+                    releaseDate,
+                    rating,
+                    imgUrl,
+                    sentAt: serverTimestamp()
+                });
+                setAddedTofav(false);
+            }
+            setAddedTofav(false);
+        //  } catch (e) {
+        //     console.log(e)
+        //  }
         });
+        // console.log(docs.docs.data());
+        // setAddedTofav(true);
+        
+        
     }
+
 
 
     return (
@@ -87,6 +112,7 @@ const FeaturedMovie = () => {
                                 </div>
                                 <p>Release: {movie.release_date}</p>
                             </div>
+                            {addedToFav && <AddedToFavourite />}
                             <div className="featuredMovie-btn">
                                 <Link to={`/Movies/${movie.id}`}>
                                     <Button className='featuredMovie-moreDetail_btn'>

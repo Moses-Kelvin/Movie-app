@@ -2,8 +2,25 @@ import React from "react";
 import { Facebook, Twitter, WhatsApp, GitHub } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import '../../../styles/Footer/Footer.scss';
+import { auth } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
+
+    const [user] = useAuthState(auth);
+
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
+
+    const navigate = useNavigate();
+
+    const accountHandler = () => {
+        if (user) {
+            navigate(`/User/${currentUser?.data.name}`);
+        }
+    }
+
     return (
         <footer className="footer">
             <div>
@@ -24,10 +41,10 @@ const Footer = () => {
             </div>
             <div className="footer-account">
                 <h3>Account</h3>
-                <p>My Account</p>
+                <p onClick={accountHandler}>My Account</p>
                 <p>User Guide</p>
-                <p>Sign Up</p>
-                <p>Log In</p>
+                {!user && <Link to="SignUp"><p>Sign Up</p></Link>}
+                {!user && <Link to="LogIn"><p>Log In</p></Link>}
             </div>
             <div className="footer-newsletter">
                 <h3>NewsLetter</h3>

@@ -44,7 +44,7 @@ const MovieSingleMoreInfo = () => {
                )}
             </div>
          </div>
-         <Link to="comments">
+         <Link to="Comments">
             <Button className="view-comment_btn">View Comments</Button>
          </Link>
       </section>

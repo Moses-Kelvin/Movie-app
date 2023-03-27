@@ -27,6 +27,10 @@
     >div:nth-child(1) {
         margin-left: 4rem;
     }
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .footer-icons {
@@ -40,6 +44,11 @@
         max-width: 70%;
     }
 }
+
+.footer-account {
+    cursor: pointer;
+}
+ 
 
 @media (max-width: 500px) {
     .footer {

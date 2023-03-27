@@ -40,6 +40,11 @@
     margin-top: 1rem;
 }
 
+.searchModal-container  {
+    background-color: rgb(41, 39, 39);
+    height: 25rem;
+}
+
 @media (max-width: 500px) {
     .searchModal {
         width: 80%;

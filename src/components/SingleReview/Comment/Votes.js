@@ -5,7 +5,7 @@ import {
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import '../../../styles/SingleReview/Votes.scss';
@@ -14,7 +14,9 @@ const Votes = ({ className, id, type, replyId }) => {
 
     const [votes, setVotes] = useState([]);
 
-    const { movieId, commentId } = useParams();
+    const { movieId, commentId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
 
     const [user] = useAuthState(auth);
 
@@ -22,11 +24,16 @@ const Votes = ({ className, id, type, replyId }) => {
 
     const navigate = useNavigate();
 
+    const onTvShowsPath = pathname.includes("TvShows");
+
     const AddVote = async (id, type, replyId) => {
         if (user) {
-            const colRef = type === "commentVote" ? collection(db, "Movies", movieId, "Comments", id, "Votes") :
-                type === "singleCommentVote" ? collection(db, "Movies", movieId, "Comments", commentId, "Votes") :
-                    collection(db, "Movies", movieId, "Comments", commentId, "Replies", replyId, "Votes");
+            const colRef = type === "commentVote" ? collection(db,
+                onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", id, "Votes") :
+                type === "singleCommentVote" ? collection(db,
+                    onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", commentId, "Votes") :
+                    collection(db,
+                        onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", commentId, "Replies", replyId, "Votes");
             const q = query(colRef, where("userId", "==", currentUser?.docId));
             const docs = await getDocs(q);
             if (docs.docs.length === 0) {
@@ -47,16 +54,22 @@ const Votes = ({ className, id, type, replyId }) => {
     const RemoveVote = async (id, type, replyId) => {
         if (user) {
             const q = query(type === "commentVote" ?
-                collection(db, `Movies/${movieId}/Comments/${id}/Votes`) :
-                type === "singleCommentVote" ? collection(db, `Movies/${movieId}/Comments/${commentId}/Votes`) :
-                    collection(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}/Votes`),
+                collection(db,
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Votes`) :
+                type === "singleCommentVote" ? collection(db,
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Votes`) :
+                    collection(db,
+                        `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}/Votes`),
                 where("userId", "==", currentUser.docId));
             const docs = await getDocs(q);
             if (docs.docs !== 0) {
                 const docId = docs.docs[0].id;
-                const docRef = type === "commentVote" ? doc(db, `Movies/${movieId}/Comments/${id}/Votes/${docId}`) :
-                    type === "singleCommentVote" ? doc(db, `Movies/${movieId}/Comments/${commentId}/Votes/${docId}`) :
-                        doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}/Votes/${docId}`);
+                const docRef = type === "commentVote" ? doc(db,
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Votes/${docId}`) :
+                    type === "singleCommentVote" ? doc(db,
+                        `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Votes/${docId}`) :
+                        doc(db,
+                            `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}/Votes/${docId}`);
                 await deleteDoc(docRef);
             }
         } else {
@@ -66,15 +79,18 @@ const Votes = ({ className, id, type, replyId }) => {
     };
 
     useEffect(() => {
-        onSnapshot(type === "commentVote" ? collection(db, `Movies/${movieId}/Comments/${id}/Votes`) :
-            type === "singleCommentVote" ? collection(db, `Movies/${movieId}/Comments/${commentId}/Votes`) :
-                collection(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}/Votes`), orderBy(
-                    'timestamp', 'asc'), (snapshot) => {
-                        setVotes(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    }
+        onSnapshot(type === "commentVote" ? collection(db,
+            `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Votes`) :
+            type === "singleCommentVote" ? collection(db,
+                `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Votes`) :
+                collection(db,
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}/Votes`), orderBy(
+                        'timestamp', 'asc'), (snapshot) => {
+                            setVotes(snapshot.docs.map(doc => ({
+                                id: doc.id,
+                                data: doc.data()
+                            })))
+                        }
         )
 
     }, [id, movieId, commentId, replyId, type]);

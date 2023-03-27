@@ -1,6 +1,6 @@
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { db } from "../../../firebase";
 import '../../../styles/SingleReview/Comment.scss';
 import Reply from "./Reply";
@@ -10,10 +10,15 @@ const Replies = ({setEditReply, setReplyId, setUserInput}) => {
 
     const [replies, setReplies] = useState([]);
 
-    const { commentId, movieId } = useParams();
+    const { commentId, movieId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
+
+    const onTvShowsPath = pathname.includes("TvShows");
 
     useEffect(() => {
-        onSnapshot(collection(db, `Movies/${movieId}/Comments/${commentId}/Replies`), orderBy(
+        onSnapshot(collection(db,
+             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies`), orderBy(
             'timestamp', 'asc'), (snapshot) => {
                 setReplies(snapshot.docs.map(doc => ({
                     id: doc.id,

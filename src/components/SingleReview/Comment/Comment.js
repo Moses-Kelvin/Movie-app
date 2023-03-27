@@ -2,16 +2,20 @@ import React, { memo, useEffect, useState } from "react";
 import CommentHeader from "./CommentHeader";
 import '../../../styles/SingleReview/Comment.scss';
 import Votes from "./Votes";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { db } from "../../../firebase";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 
 
-const SingleReply = ({ username, reply, img, movieId, id }) => {
+const SingleReply = ({ username, reply, img, movieId, id, tvShowId }) => {
+    const { pathname } = useLocation();
+
+    const onTvShowsPath = pathname.includes("TvShows");
+
     return (
         <div className="singleReply">
             <img src={img} alt="" />
-            <Link to={`/Movies/${movieId}/comments/${id}`} className="singleReply-username">
+            <Link to={`${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`} className="singleReply-username">
                 <h4>{username}</h4>
             </Link>
             <p>{reply.length >= 40 ? `${reply.slice(0,40)}...` : reply}</p>
@@ -22,15 +26,20 @@ const SingleReply = ({ username, reply, img, movieId, id }) => {
 
 const Comment = (props) => {
 
+    const { pathname } = useLocation();
+
+    const onTvShowsPath = pathname.includes("TvShows");
+
     const { userComment, name, imgUrl, id, setUserInput, setEditComment,
         setCommentID, setEditReply, setReplyId } = props;
 
     const [replyList, setReplyList] = useState([]);
 
-    const { movieId } = useParams();
+    const { movieId, tvShowId } = useParams();
 
     useEffect(() => {
-        onSnapshot(collection(db, `Movies/${movieId}/Comments/${id}/Replies`), orderBy(
+        onSnapshot(collection(db,
+             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Replies`), orderBy(
             'timestamp', 'asc'), (snapshot) => {
                 setReplyList(snapshot.docs.map(doc => ({
                     id: doc.id,
@@ -60,7 +69,7 @@ const Comment = (props) => {
                     <p>{userComment}</p>
                 </div>
             </div>
-            {replyList.length > 2 && <Link to={`/Movies/${movieId}/comments/${id}`} className="view-replies">
+            {replyList.length > 2 && <Link to={`${id}`} className="view-replies">
                 <p>view replies previous {replyList.length} replies</p>
             </Link>}
             <div className="ReplyList">
@@ -71,6 +80,7 @@ const Comment = (props) => {
                         reply={reply.data.reply}
                         username={reply.data.name}
                         movieId={movieId}
+                        tvShowId={tvShowId}
                         id={id}
                     />
                 )}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TextArea from "./TextArea";
 import '../../styles/SingleReview/SingleReview.scss';
 import Comment from "./Comment/Comment";
-import { Navigate, useParams, useRoutes } from "react-router-dom";
+import { Navigate, useLocation, useParams, useRoutes } from "react-router-dom";
 import ViewReplies from "./Reply/ViewReplies";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -20,20 +20,25 @@ const SingleReview = () => {
     const [replyId, setReplyId] = useState("");
     const [editSingleComment, setEditSingleComment] = useState(false);
     const [userInput, setUserInput] = useState("");
-    
-    const { movieId } = useParams();
+
+    const { movieId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
 
     const [user] = useAuthState(auth);
 
 
     useEffect(() => {
-        onSnapshot(collection(db, `Movies/${movieId}/Comments`), orderBy(
-            'timestamp', 'asc'), (snapshot) => {
-                setMovieComments(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
+        const onTvShowsPath = pathname.includes("TvShows");
+        onSnapshot(collection(db,
+            `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`),
+            orderBy(
+                'timestamp', 'asc'), (snapshot) => {
+                    setMovieComments(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                }
         )
     }, [movieId]);
 
@@ -61,22 +66,22 @@ const SingleReview = () => {
     const comments = (
         <section className="MovieSingleReview-section">
             <h2>{NoOfComment}</h2>
-                <div className="scroller commentScroller">
-                    {movieComments.map(comment => (
-                        <Comment
-                            key={comment.id}
-                            userComment={comment.data.comment}
-                            name={comment.data.name}
-                            imgUrl={comment.data.imgUrl}
-                            id={comment.id}
-                            setUserInput={setUserInput}
-                            setCommentID={setCommentID}
-                            setEditComment={setEditComment}
-                        />
-                    ))}
-                </div>
+            <div className="scroller commentScroller">
+                {movieComments.map(comment => (
+                    <Comment
+                        key={comment.id}
+                        userComment={comment.data.comment}
+                        name={comment.data.name}
+                        imgUrl={comment.data.imgUrl}
+                        id={comment.id}
+                        setUserInput={setUserInput}
+                        setCommentID={setCommentID}
+                        setEditComment={setEditComment}
+                    />
+                ))}
+            </div>
             {movieComments.length === 0 && NoComment}
-            {user && <TextArea placeHolder="Write a comment..."
+            {user && <TextArea placeHolder="Leave your thought here..."
                 action={editComment || editSingleComment ? "Update" : "Comment"}
                 userInput={userInput}
                 setUserInput={setUserInput}

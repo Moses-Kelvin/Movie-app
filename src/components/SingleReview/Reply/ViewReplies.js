@@ -5,17 +5,23 @@ import Replies from "./Replies";
 import '../../../styles/SingleReview/Comment.scss';
 import { doc, onSnapshot, orderBy } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 
 const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserInput }) => {
 
     const [currentComment, setCurrentComment] = useState("");
 
-    const { commentId, movieId } = useParams();
+    const { commentId, movieId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
+
+    const onTvShowsPath = pathname.includes("TvShows");
+
 
     useEffect(() => {
-        onSnapshot(doc(db, `Movies/${movieId}/Comments/${commentId}`), orderBy(
+        onSnapshot(doc(db,
+             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`), orderBy(
             'timestamp', 'asc'), (snapshot) => {
                 setCurrentComment(snapshot.data())
             }

@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import '../../../styles/SingleReview/CommentHeader.scss';
@@ -14,7 +14,11 @@ const CommentHeader = (props) => {
         sentAt, name, imgUrl, id,  setEditComment, setEditReply, setReplyId,
         setUserInput, setEditSingleComment } = props
 
-    const { commentId, movieId } = useParams();
+    const { commentId, movieId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
+
+    const onTvShowsPath = pathname.includes("TvShows");
 
     const navigate = useNavigate();
 
@@ -25,14 +29,19 @@ const CommentHeader = (props) => {
     const deleteReview = async (id, replyId) => {
         try {
             if (type === "comment") {
-                const docRef = doc(db, `Movies/${movieId}/Comments/${id}`);
+                const docRef = doc(db, 
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
                 await deleteDoc(docRef);
             } else if (type === "reply") {
-                const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
+                const docRef = doc(db, 
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
                 await deleteDoc(docRef);
             } else if (type === "singleComment") {
-                navigate(`Movies/${movieId}/Comments`);
-                const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}`);
+                const commentRoute =  `/${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`;
+                console.log(commentRoute);
+                const docRef = doc(db, 
+                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
+                    navigate(commentRoute);
                 await deleteDoc(docRef);
             }
         } catch (e) {
@@ -44,18 +53,21 @@ const CommentHeader = (props) => {
         if (type === "comment") {
             setEditComment(true);
             setCommentID(id);
-            const docRef = doc(db, `Movies/${movieId}/Comments/${id}`)
+            const docRef = doc(db,
+                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().comment);
         } else if (type === "reply") {
             setEditReply(true);
             setReplyId(replyId);
-            const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
+            const docRef = doc(db, 
+                `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().reply)
         } else if (type === "singleComment") {
             setEditSingleComment(true);
-            const docRef = doc(db, `Movies/${movieId}/Comments/${commentId}`);
+            const docRef = doc(db,
+                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().comment);
         }
@@ -71,7 +83,7 @@ const CommentHeader = (props) => {
                 <h5>7hr ago</h5>
             </div>
             <div>
-                <Link to={`/Movies/${movieId}/comments/${id}`}>
+                <Link to={`${id}`}>
                     {type === "comment" && <Reply sx={{ color: 'blue', fontSize: iconSize }} />}
                 </Link>
                 {currentUser?.data.name === name ?

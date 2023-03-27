@@ -9,7 +9,7 @@ import { Favorite, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Button from "../../components/UI/Button";
 
-const Movies = () => {
+const UserFavouriteMovies = () => {
 
     const [favouriteMovies, setFavouriteMovies] = useState([]);
 
@@ -44,7 +44,7 @@ const Movies = () => {
                     <p>{moviesFound}</p>
                 </div>
                 {favouriteMovies.length === 0  ? <h1>No Favourite Movies Found!</h1> :
-                <div className="MoviesGrid-container">
+                <div className="MoviesGrid-container favouriteMovies-container scroller">
                     {favouriteMovies.map((favMovie) =>
                         <div className="movie MoviesGrid-movie" key={favMovie.id}>
                             <img src={`https://image.tmdb.org/t/p/w500${favMovie.data.imgUrl}`} alt="" />
@@ -73,5 +73,5 @@ const Movies = () => {
     )
 };
 
-export default Movies;
+export default UserFavouriteMovies;
 

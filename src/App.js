@@ -21,7 +21,7 @@ const App = () => {
         { path: '/SignUp', element: <SignUp /> },
         { path: '/LogIn', element: <LogIn /> },
         { path: '/Movies', element: <Movies /> },
-        { path: '/TvShows/:tvShowId', element: <TvShowSingle /> },
+        { path: '/TvShows/:tvShowId/*', element: <TvShowSingle /> },
         { path: '/TvShows', element: <TvShows /> },
         { path: '/News', element: <News /> },
         { path: '/Movies/:movieId/*', element: <MovieSingle /> },

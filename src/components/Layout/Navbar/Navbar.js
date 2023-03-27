@@ -74,7 +74,7 @@ const Navbar = () => {
                 </ul>
                 <div className="navbar-icons">
                     <Search sx={{ fontSize: '30px' }} onClick={() => setSearchIsVisible(true)} />
-                    {user && <Link to='/User/kelvin'>
+                    {user && <Link to={`User/${currentUser?.data.name}`}>
                         {showNavItems && (currentUser?.data.imgUrl ?<img src={currentUser?.data.imgUrl} alt = "" />
                     : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />)}
                     </Link>}

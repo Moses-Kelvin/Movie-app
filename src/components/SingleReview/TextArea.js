@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import InputField from "../UI/InputField";
 import '../../styles/SingleReview/TextArea.scss';
 import Button from "../UI/Button";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
@@ -19,12 +19,18 @@ const TextArea = (props) => {
 
     const { data: userData } = useFetchUserDataQuery(user?.uid);
 
-    const { movieId, commentId } = useParams();
+    const { movieId, commentId, tvShowId } = useParams();
+
+    const { pathname } = useLocation();
+
+    // console.log(pathname);
 
     const sendMessage = async () => {
+        const onTvShowsPath = pathname.includes("TvShows");
         if (action === "Comment") {
             setUserInput("");
-            await addDoc(collection(db, "Movies", movieId, "Comments"), {
+            await addDoc(collection(db,
+                onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments"), {
                 name: userData?.data.name,
                 imgUrl: userData?.data.imgUrl,
                 vote: 0,
@@ -34,11 +40,13 @@ const TextArea = (props) => {
         } else if (action === "Update") {
             let commentRef;
             if (commentId) {
-                setEditSingleComment(false)
-                commentRef = doc(db, `Movies/${movieId}/Comments/${commentId}`)
+                setEditSingleComment(false);
+                commentRef = doc(db,
+                    `${onTvShowsPath? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
             } else {
                 setEditComment(false);
-                commentRef = doc(db, `Movies/${movieId}/Comments/${id}`)
+                commentRef = doc(db,  
+                    `${onTvShowsPath? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
             }
             setUserInput("")
             await updateDoc(commentRef, {
@@ -46,7 +54,8 @@ const TextArea = (props) => {
             })
         } else if (action === "Reply") {
             setUserInput("")
-            await addDoc(collection(db, "Movies", movieId, "Comments", commentId, "Replies"), {
+            await addDoc(collection(db,  
+               onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", commentId, "Replies"), {
                 name: userData?.data.name,
                 imgUrl: userData?.data.imgUrl,
                 vote: 0,
@@ -56,7 +65,8 @@ const TextArea = (props) => {
         } else if (action === "Done") {
             setEditReply(false);
             setUserInput("")
-            const ReplyRef = doc(db, `Movies/${movieId}/Comments/${commentId}/Replies/${replyId}`);
+            const ReplyRef = doc(db, 
+                `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
             await updateDoc(ReplyRef, {
                 reply: userInput
             })
@@ -86,6 +96,6 @@ const TextArea = (props) => {
         </div>
     )
 };
- 
+
 
 export default memo(TextArea);
