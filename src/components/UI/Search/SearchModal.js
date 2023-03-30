@@ -4,11 +4,10 @@ import '../../../styles/UI/Search/SearchModal.scss';
 import { KeyboardBackspace, Search } from '@mui/icons-material';
 import InputField from "../InputField";
 import SearchItem from "./SearchItem";
-import ReviewSpinner from "../Spinners/ReviewSpinner";
 
 
-export const BackDrop = () => {
-    return <div className="backdrop"></div>
+export const BackDrop = ({className}) => {
+    return <div className={`backdrop ${className}`}></div>
 };
 
 

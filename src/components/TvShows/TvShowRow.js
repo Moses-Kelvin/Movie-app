@@ -5,7 +5,7 @@ import Button from "../UI/Button";
 import { Link, useParams } from "react-router-dom";
 
 
-const TvShowRow = ({ movieHeader, MoviesDiscoverData }) => {
+const TvShowRow = ({ movieHeader, MoviesDiscoverData, addToFav }) => {
 
         const params = useParams();
         console.log(params)
@@ -26,7 +26,14 @@ const TvShowRow = ({ movieHeader, MoviesDiscoverData }) => {
                                                                 {data.first_air_date.split("-")[0]}
                                                         </h4>
                                                         <div>
-                                                                <Favorite sx={{ fontSize: '22px' }} />
+                                                                <Favorite 
+                                                                onClick={() => 
+                                                                        addToFav(data.name, 
+                                                                        data.first_air_date,
+                                                                         data.vote_average, 
+                                                                         data.poster_path,
+                                                                         data.id, "TvShows")}
+                                                                sx={{ fontSize: '22px' }} />
                                                                 <span>
                                                                         <Star sx={{ color: 'yellow', fontSize: '22px' }} />
                                                                         {data.vote_average}
