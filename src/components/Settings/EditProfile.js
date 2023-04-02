@@ -25,10 +25,10 @@ const EditProfile = () => {
           e.preventDefault();
           const userRef = doc(db, "users", currentUser?.docId);
           await updateDoc(userRef, {
-             name: userName && userName,
-             email: email && email,
-             state: state && state,
-             country: country && country
+             name: userName,
+             email:  email,
+             state: state,
+             country: country
           })
           navigate('home');
     };
@@ -42,6 +42,7 @@ const EditProfile = () => {
                     placeholder="Username"
                     type="text"
                     textColor="white"
+                    required
                     Width='100%'
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
@@ -50,6 +51,7 @@ const EditProfile = () => {
                     id="standard-basic"
                     type="email"
                     placeholder="Email Adress"
+                    required
                     textColor="white"
                     Width='100%'
                     value={email}
@@ -59,6 +61,7 @@ const EditProfile = () => {
                     id="standard-basic"
                     placeholder="Country"
                     type="text"
+                    required
                     textColor="white"
                     Width='100%'
                     value={country}
@@ -69,6 +72,7 @@ const EditProfile = () => {
                     placeholder="State"
                     type="text"
                     textColor="white"
+                    required
                     Width='100%'
                     value={state}
                     onChange={(e) => setState(e.target.value)}

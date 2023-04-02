@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import '../../styles/Pages/UserFavouriteMovies.scss';
 import '../../styles/Pages/Movies.scss';
 import { auth, db } from "../../firebase";
-import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { Star, RemoveCircleOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Button from "../../components/UI/Button";
+import Oops from "../../assets/images/oops.png";
 
 const UserFavouriteMovies = () => {
 
@@ -16,6 +17,7 @@ const UserFavouriteMovies = () => {
     const [user] = useAuthState(auth);
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
+
 
     useEffect(() => {
         onSnapshot(collection(db, `users/${currentUser?.docId}/Favourites`), orderBy(
@@ -34,6 +36,13 @@ const UserFavouriteMovies = () => {
         await deleteDoc(docRef);
     };
 
+    const NofavouriteMovieFound = (
+        <div className="NofavouriteMovieFound">
+        <img className="oops-img" src={Oops} alt="" />
+            <h1>No Favourite Movies Found!</h1>
+        </div>
+    )
+
     let moviesFound;
     if (favouriteMovies.length === 0) {
         moviesFound = "found no movie"
@@ -45,11 +54,11 @@ const UserFavouriteMovies = () => {
 
     return (
         <section className="favourite-movies">
-            <section className="MoviesGrid-section">
+            <section className="MoviesGrid-section favourite-movies-Section">
                 <div className="MoviesGrid-header">
                     <p>{moviesFound}</p>
                 </div>
-                {favouriteMovies.length === 0 ? <h1>No Favourite Movies Found!</h1> :
+                {favouriteMovies.length === 0 ? NofavouriteMovieFound :
                     <div className="MoviesGrid-container favouriteMovies-container scroller">
                         {favouriteMovies.map((favMovie) =>
                             <div className="movie MoviesGrid-movie" key={favMovie.id}>

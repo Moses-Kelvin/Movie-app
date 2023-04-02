@@ -23,12 +23,10 @@ const TextArea = (props) => {
 
     const { pathname } = useLocation();
 
-    // console.log(pathname);
 
     const sendMessage = async () => {
         const onTvShowsPath = pathname.includes("TvShows");
         if (action === "Comment") {
-            setUserInput("");
             await addDoc(collection(db,
                 onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments"), {
                 name: userData?.data.name,
@@ -37,6 +35,7 @@ const TextArea = (props) => {
                 comment: userInput,
                 sentAt: serverTimestamp()
             });
+            setUserInput("");
         } else if (action === "Update") {
             let commentRef;
             if (commentId) {
@@ -53,7 +52,6 @@ const TextArea = (props) => {
                 comment: userInput
             })
         } else if (action === "Reply") {
-            setUserInput("")
             await addDoc(collection(db,  
                onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", commentId, "Replies"), {
                 name: userData?.data.name,
@@ -62,14 +60,15 @@ const TextArea = (props) => {
                 reply: userInput,
                 sentAt: serverTimestamp()
             });
+            setUserInput("");
         } else if (action === "Done") {
             setEditReply(false);
-            setUserInput("")
             const ReplyRef = doc(db, 
                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
             await updateDoc(ReplyRef, {
                 reply: userInput
             })
+            setUserInput("");
         }
     };
 

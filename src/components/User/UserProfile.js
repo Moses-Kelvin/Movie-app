@@ -5,11 +5,11 @@ import { AddAPhoto, Settings } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import ProfilePreview from "../UI/ProfilePreview";
- 
+
 
 const UserProfile = () => {
 
@@ -29,15 +29,26 @@ const UserProfile = () => {
         }
     }, [photoUrl, refetch])
 
+    // useEffect(() => {
+    //     const updatePhoto = async () => {
+    //         const userRef = doc(db, "users", currentUser?.docId);
+    //         await updateDoc(userRef, {
+    //             imgUrl: photoUrl
+    //         })
+    //     }
+    //     if (photoUrl !== null) { updatePhoto(); }
+    // }, [photoUrl, currentUser?.docId]);
+
     useEffect(() => {
-        const updatePhoto = async () => {
-            const userRef = doc(db, "users", currentUser?.docId);
-            await updateDoc(userRef, {
-                imgUrl: photoUrl
-            })
-        }
-        if (photoUrl !== null) { updatePhoto(); }
-    }, [photoUrl, currentUser?.docId])
+        const addProfilePic = async () => {
+            const colRef = collection(db, "users", currentUser?.docId, "ProfilePics");
+            await addDoc(colRef, {
+                imgurl: photoUrl,
+                userId: currentUser?.docId,
+            });
+        };
+        if (photoUrl) addProfilePic();
+    }, [photoUrl, currentUser?.docId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -62,6 +73,7 @@ const UserProfile = () => {
                 });
             }
         );
+
     };
 
     const handleFileChange = (e) => {

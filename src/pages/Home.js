@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import MovieGenreFilter from '../components/Movies/MovieGenreFilter';
 import MovieRow from '../components/Movies/MovieRow';
 import FeaturedMovie from '../components/Movies/FeaturedMovie';
-import { useGetMoviesDiscoverQuery, useGetPopularTvShowsQuery, useGetTopRatedTvShowsQuery, useGetUpcomingMoviesQuery } from '../store/features/moviesApiSlice';
+import {
+    useGetMoviesDiscoverQuery,
+    useGetPopularTvShowsQuery,
+    useGetTopRatedTvShowsQuery,
+    useGetUpcomingMoviesQuery
+} from '../store/features/moviesApiSlice';
 import { useGetTopStoriesNewsQuery } from '../store/features/newsApiSlice';
 import NewsType from '../components/News/NewsType';
 import TvShowRow from '../components/TvShows/TvShowRow';
@@ -13,8 +18,7 @@ import { useFetchUserDataQuery } from '../store/features/userDataSlice';
 
 const Home = () => {
 
-    const [addedToFav, setAddedTofav] = useState(false);
-    const [alreadyExist, setAlreadyExist] = useState(false);
+    const [addedToFav, setAddedTofav] = useState("");
 
     const [user] = useAuthState(auth);
 
@@ -52,11 +56,9 @@ const Home = () => {
         try {
             const colRef = collection(db, `users/${currentUser?.docId}/Favourites`);
             const docs = await getDocs(colRef);
-            const movie = docs?.docs.filter(doc => title === doc.data().title);
-            if (movie.length === 0) {
-                setAddedTofav(true);
-                setAlreadyExist(false);
-                addDoc(collection(db, "users", currentUser?.docId, "Favourites"), {
+            const movie = docs?.docs.find(doc => title === doc.data().title);
+            if (!movie) {
+               await addDoc(collection(db, "users", currentUser?.docId, "Favourites"), {
                     title,
                     releaseDate,
                     rating,
@@ -65,10 +67,10 @@ const Home = () => {
                     section,
                     sentAt: serverTimestamp()
                 });
+                setAddedTofav("❤️ Added to favourite!");
                 removePopUp();
             } else {
-                setAlreadyExist(true);
-                setAddedTofav(true);
+                setAddedTofav("Movie already added to favourie");
                 removePopUp();
             }
         } catch (e) {
@@ -81,7 +83,7 @@ const Home = () => {
             <FeaturedMovie
                 addToFav={addToFav}
                 addedToFav={addedToFav}
-                alreadyExist={alreadyExist} />
+            />
             <MovieGenreFilter />
             {isMoviesDiscoverfetching ? <p style={{ color: 'white' }}>Loading..</p> :
                 <MovieRow movieHeader="DISCOVER"

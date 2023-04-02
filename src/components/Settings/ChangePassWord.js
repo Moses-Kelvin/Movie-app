@@ -12,6 +12,7 @@ const ChangePassword = () => {
                     id="standard-basic"
                     placeholder="Old Password"
                     textColor="white"
+                    required
                     Width='100%'
                     iconEnd={<VisibilityOff sx={{color: 'white'}}/>}
                     variant="filled" />
@@ -19,6 +20,7 @@ const ChangePassword = () => {
                     id="standard-basic"
                     placeholder="New Password"
                     textColor="white"
+                    required
                     Width='100%'
                     iconEnd={<VisibilityOff sx={{color: 'white'}}/>}
                     variant="filled" />

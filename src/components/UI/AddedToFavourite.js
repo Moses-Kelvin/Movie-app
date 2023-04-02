@@ -3,21 +3,21 @@ import ReactDOM from "react-dom";
 import "../../styles/UI/AddedToFavourite.scss";
 import { BackDrop } from "./Search/SearchModal";
 
-const PopUpmsg = ({alreadyExist}) => {
+const PopUpmsg = ({addedToFav}) => {
     return (
         <div className="AddedToFavourite">
-            <p>{`${alreadyExist ? "Movie already added to favourie" : "❤️ Added to favourite!"}`}</p>
+            <p>{addedToFav}</p>
         </div>
     )
 };
 
 const portalElement = document.getElementById("overlays");
 
-const AddedToFavourite = ({ alreadyExist }) => {
+const AddedToFavourite = ({ addedToFav }) => {
     return (
         <>
             {ReactDOM.createPortal(<BackDrop className="popUp-backdrop" />, portalElement)}
-            {ReactDOM.createPortal((<PopUpmsg alreadyExist={alreadyExist} />), portalElement)}
+            {ReactDOM.createPortal((<PopUpmsg addedToFav={addedToFav} />), portalElement)}
         </>
     );
 };
