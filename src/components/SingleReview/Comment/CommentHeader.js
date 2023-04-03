@@ -1,7 +1,7 @@
 import { Delete, Edit, Reply } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
-import { deleteDoc, doc, getDoc } from "firebase/firestore";
-import React from "react";
+import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
@@ -10,9 +10,11 @@ import '../../../styles/SingleReview/CommentHeader.scss';
 
 const CommentHeader = (props) => {
 
-    const { avatarWidth, avatarHeight, iconSize, setCommentID, type, replyId, 
-        sentAt, name, imgUrl, id,  setEditComment, setEditReply, setReplyId,
+    const { avatarWidth, avatarHeight, iconSize, setCommentID, type, replyId,
+        sentAt, name, userId, id, setEditComment, setEditReply, setReplyId,
         setUserInput, setEditSingleComment } = props
+
+    const [profilePics, setProfilePics] = useState([]);
 
     const { commentId, movieId, tvShowId } = useParams();
 
@@ -26,22 +28,36 @@ const CommentHeader = (props) => {
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
+    useEffect(() => {
+        onSnapshot(collection(db, `users/${userId}/ProfilePics`),
+            orderBy('timestamp', 'asc'), (snapshot) => {
+                setProfilePics(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            }
+        )
+    }, [userId]);
+
+    // console.log(profilePics[0]?.data.imgurl);
+
+
     const deleteReview = async (id, replyId) => {
         try {
             if (type === "comment") {
-                const docRef = doc(db, 
+                const docRef = doc(db,
                     `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
                 await deleteDoc(docRef);
             } else if (type === "reply") {
-                const docRef = doc(db, 
+                const docRef = doc(db,
                     `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
                 await deleteDoc(docRef);
             } else if (type === "singleComment") {
-                const commentRoute =  `/${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`;
+                const commentRoute = `/${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`;
                 console.log(commentRoute);
-                const docRef = doc(db, 
+                const docRef = doc(db,
                     `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
-                    navigate(commentRoute);
+                navigate(commentRoute);
                 await deleteDoc(docRef);
             }
         } catch (e) {
@@ -54,20 +70,20 @@ const CommentHeader = (props) => {
             setEditComment(true);
             setCommentID(id);
             const docRef = doc(db,
-                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
+                `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().comment);
         } else if (type === "reply") {
             setEditReply(true);
             setReplyId(replyId);
-            const docRef = doc(db, 
+            const docRef = doc(db,
                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().reply)
         } else if (type === "singleComment") {
             setEditSingleComment(true);
             const docRef = doc(db,
-                 `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
+                `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
             const docSnap = await getDoc(docRef);
             setUserInput(docSnap.data().comment);
         }
@@ -77,7 +93,7 @@ const CommentHeader = (props) => {
     return (
         <div className="commentHeader">
             <div>
-                {imgUrl ? <img src={imgUrl} alt="" />
+                {profilePics.length !== 0 ? <img src={profilePics[0]?.data.imgurl} alt="" />
                     : <Avatar sx={{ width: avatarWidth, height: avatarHeight }} />}
                 <h4>{name}</h4>
                 <h5>7hr ago</h5>

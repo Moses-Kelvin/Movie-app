@@ -30,7 +30,7 @@ const Comment = (props) => {
 
     const onTvShowsPath = pathname.includes("TvShows");
 
-    const { userComment, name, imgUrl, id, setUserInput, setEditComment,
+    const { userComment, name, userId, id, setUserInput, setEditComment,
         setCommentID, setEditReply, setReplyId } = props;
 
     const [replyList, setReplyList] = useState([]);
@@ -57,7 +57,7 @@ const Comment = (props) => {
                 <div>
                     <CommentHeader
                         name={name}
-                        imgUrl={imgUrl}
+                        userId={userId}
                         id={id}
                         setCommentID={setCommentID}
                         setUserInput={setUserInput}

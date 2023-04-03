@@ -1,8 +1,7 @@
 import React from "react";
-import film1 from '../../assets/images/img4.jpg';
-import MoviesGrid from "../../components/Movies/MoviesGrid";
 import MovieSearch from "../../components/Movies/MovieSearch";
 import { useMediaQuery, useTheme } from "@mui/material";
+import TvShowGrid from "../../components/TvShows/TvShowGrid";
 
 
 const TvShows = () => {
@@ -16,7 +15,7 @@ const TvShows = () => {
             </div>
             <section className="TVShow-section">
                 {!mobileScreen && <MovieSearch />}
-                <MoviesGrid ent="Series" />
+                <TvShowGrid ent="Series" />
                 {mobileScreen && <MovieSearch />}
             </section>
         </>

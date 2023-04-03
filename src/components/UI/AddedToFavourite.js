@@ -3,21 +3,21 @@ import ReactDOM from "react-dom";
 import "../../styles/UI/AddedToFavourite.scss";
 import { BackDrop } from "./Search/SearchModal";
 
-const PopUpmsg = ({addedToFav}) => {
+const Message = ({popUpMsg}) => {
     return (
         <div className="AddedToFavourite">
-            <p>{addedToFav}</p>
+            <p>{popUpMsg}</p>
         </div>
     )
 };
 
 const portalElement = document.getElementById("overlays");
 
-const AddedToFavourite = ({ addedToFav }) => {
+const AddedToFavourite = ({ popUpMsg }) => {
     return (
         <>
             {ReactDOM.createPortal(<BackDrop className="popUp-backdrop" />, portalElement)}
-            {ReactDOM.createPortal((<PopUpmsg addedToFav={addedToFav} />), portalElement)}
+            {ReactDOM.createPortal((<Message popUpMsg={popUpMsg} />), portalElement)}
         </>
     );
 };

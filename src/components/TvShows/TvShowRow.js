@@ -2,7 +2,7 @@ import React from "react";
 import TvShowCard from "./TvShowCard";
 
 
-const TvShowRow = ({ movieHeader, MoviesDiscoverData, addToFav }) => {
+const TvShowRow = ({ movieHeader, MoviesDiscoverData }) => {
 
         return (<div className="MovieRow">
                 <h1>{movieHeader}</h1>
@@ -11,7 +11,6 @@ const TvShowRow = ({ movieHeader, MoviesDiscoverData, addToFav }) => {
                                 <TvShowCard
                                         key={index}
                                         data={data}
-                                        addToFav={addToFav}
                                 />
                         )}
                 </div>

@@ -1,16 +1,16 @@
- import React, { useState } from "react";
+import React, { useState } from "react";
 import '../../styles/Movies/MovieRow.scss';
 import '../../styles/Movies/MoviesGrid.scss';
 import { FormControl, InputLabel, MenuItem, Pagination, Select, Typography } from "@mui/material";
-import { useGetMoviesDiscoverQuery } from "../../store/features/moviesApiSlice";
-import MovieGridCard from "./MovieGridCard";
+import { useGetPopularTvShowsQuery } from "../../store/features/moviesApiSlice";
+import TvShowGridCard from "./TvShowGridCard";
 
 
-const MoviesGrid = ({ ent }) => {
+const TvShowGrid = ({ ent }) => {
 
     const [page, setPage] = useState(1);
 
-    const upcomingMoviesResult = JSON.parse(localStorage.getItem('upcomingMovies'));
+    const upcomingMoviesResult = JSON.parse(localStorage.getItem('popularTvShows'));
 
     const upcomingMoviesResults = upcomingMoviesResult.results;
 
@@ -18,7 +18,9 @@ const MoviesGrid = ({ ent }) => {
         setPage(value);
     }
 
-    const { data } = useGetMoviesDiscoverQuery(page);
+    // const { data } = useGetMoviesDiscoverQuery(page);
+
+    const { data } = useGetPopularTvShowsQuery(page);
 
 
 
@@ -55,7 +57,7 @@ const MoviesGrid = ({ ent }) => {
             </div>
             <div className="MoviesGrid-container">
                 {upcomingMoviesResults.map((data, index) =>
-                    <MovieGridCard
+                    <TvShowGridCard
                         key={index}
                         data={data}
                     />
@@ -71,4 +73,4 @@ const MoviesGrid = ({ ent }) => {
     )
 };
 
-export default MoviesGrid;
+export default TvShowGrid;

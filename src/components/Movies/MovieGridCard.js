@@ -1,21 +1,21 @@
+import React, { useEffect, useState } from "react";
 import { Favorite, Star } from "@mui/icons-material";
-import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../UI/Button";
-import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
-import { useState } from "react";
-import { auth, db } from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useEffect } from "react";
-import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { useDispatch } from "react-redux";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { Addfavourite } from "../../store/actions/addFavourite";
+import { collection, onSnapshot, orderBy } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
-const MovieCard = ({ data }) => {
+const MovieGridCard = ({ data }) => {
+
 
     const [favColor, setFavColor] = useState("");
+
     const [user] = useAuthState(auth);
-    
+
     const dispatch = useDispatch();
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
@@ -44,9 +44,9 @@ const MovieCard = ({ data }) => {
 
 
     return (
-        <div className="movie">
+        <div className="movie MoviesGrid-movie">
             <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt="" />
-            <Link to={`/Movies/${data.id}`}>
+            <Link to="/Movies/Adam">
                 <Button className="readMore-btn">Read More</Button>
             </Link>
             <div>
@@ -70,4 +70,4 @@ const MovieCard = ({ data }) => {
     )
 };
 
-export default MovieCard;
+export default MovieGridCard;

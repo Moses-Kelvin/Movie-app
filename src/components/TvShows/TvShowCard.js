@@ -9,11 +9,15 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Addfavourite } from "../../store/actions/addFavourite";
 
 const TvShowCard = ({data, addToFav}) => {
 
     const [favColor, setFavColor] = useState("");
     const [user] = useAuthState(auth);
+
+    const dispatch = useDispatch();
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
@@ -30,6 +34,15 @@ const TvShowCard = ({data, addToFav}) => {
         )
     }, [currentUser?.docId, data]);
 
+    const tvShowData = {
+        title: data.name,
+        date: data.first_air_date,
+        vote: data.vote_average,
+        imgUrl: data.poster_path,
+        id: data.id,
+        type: "TvShows"
+    }
+
     return (
         <div className="movie">
             <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt="" />
@@ -43,14 +56,11 @@ const TvShowCard = ({data, addToFav}) => {
                         {data.first_air_date.split("-")[0]}
                     </h4>
                     <div>
-                        <Favorite
+                      {user &&  <Favorite
                             onClick={() =>
-                                addToFav(data.name,
-                                    data.first_air_date,
-                                    data.vote_average,
-                                    data.poster_path,
-                                    data.id, "TvShows")}
-                            sx={{ fontSize: '22px', color: favColor }} />
+                               dispatch(Addfavourite(tvShowData, currentUser?.docId))
+                                }
+                            sx={{ fontSize: '22px', color: favColor }} />}
                         <span>
                             <Star sx={{ color: 'yellow', fontSize: '22px' }} />
                             {data.vote_average}

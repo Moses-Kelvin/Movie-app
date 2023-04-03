@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../../../styles/Navbar/Navbar.scss';
 import { Search, AccountCircle } from "@mui/icons-material";
 import Button from '../../UI/Button';
@@ -6,14 +6,16 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchModal from "../../UI/Search/SearchModal";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../../../firebase";
+import { auth, db, logout } from "../../../firebase";
 import { Movie, Tv, Newspaper, Home, MoreVert } from "@mui/icons-material";
 import NavbarMenu from "./NavbarMenu";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
+import { collection, onSnapshot, orderBy } from "firebase/firestore";
 
 const Navbar = () => {
 
     const [anchor, setAnchor] = useState(null);
+    const [profilePics, setProfilePics] = useState([]);
     const [searchIsVisible, setSearchIsVisible] = useState(false);
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
@@ -32,6 +34,17 @@ const Navbar = () => {
     const openMenu = (event) => {
         setAnchor(event.currentTarget);
     };
+
+    useEffect(() => {
+        onSnapshot(collection(db, `users/${currentUser?.docId}/ProfilePics`),
+            orderBy('timestamp', 'asc'), (snapshot) => {
+                setProfilePics(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            }
+        )
+    }, [currentUser?.docId]);
 
     return (
         <>
@@ -75,13 +88,17 @@ const Navbar = () => {
                 <div className="navbar-icons">
                     <Search sx={{ fontSize: '30px' }} onClick={() => setSearchIsVisible(true)} />
                     {user && <Link to={`User/${currentUser?.data.name}`}>
-                        {showNavItems && (currentUser?.data.imgUrl ?<img src={currentUser?.data.imgUrl} alt = "" />
-                    : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />)}
+                        {showNavItems && (profilePics.length !== 0 ?
+                            <img src={profilePics[0]?.data.imgurl} alt="" />
+                            : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />)}
                     </Link>}
                     {(!user && showNavItems) && <Link to='/LogIn'>
                         <Button className='log-in'>Log In</Button>
                     </Link>}
-                    {(showNavItems && user) && <Button className='log-out' handleClick={logUserOut}>Log Out</Button>}
+                    {(showNavItems && user) && <Button className='log-out'
+                        handleClick={logUserOut}>
+                        Log Out
+                    </Button>}
                     {(!user && showNavItems) && <Link to='/SignUp'>
                         <Button className='sign-up'>Sign Up</Button>
                     </Link>}

@@ -5,7 +5,7 @@ import { AddAPhoto, Settings } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, orderBy, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import ProfilePreview from "../UI/ProfilePreview";
@@ -14,6 +14,7 @@ import ProfilePreview from "../UI/ProfilePreview";
 const UserProfile = () => {
 
     const [file, setFile] = useState("");
+    const [profilePics, setProfilePics] = useState([]);
 
     const [user] = useAuthState(auth);
 
@@ -49,6 +50,17 @@ const UserProfile = () => {
         };
         if (photoUrl) addProfilePic();
     }, [photoUrl, currentUser?.docId]);
+
+    useEffect(() => {
+        onSnapshot(collection(db, `users/${currentUser?.docId}/ProfilePics`),
+            orderBy('timestamp', 'asc'), (snapshot) => {
+                setProfilePics(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            }
+        )
+    }, [currentUser?.docId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -90,8 +102,8 @@ const UserProfile = () => {
             {file && <ProfilePreview file={file} handleSubmit={handleSubmit} onClose={() => setFile(null)} />}
             <section className="userProfile-section">
                 <div className="userProfile-avatar">
-                    {currentUser?.data.imgUrl ?
-                        <img className="userImg" src={currentUser?.data.imgUrl} alt="" /> :
+                    {profilePics.length !== 0 ?
+                        <img className="userImg" src={profilePics[0]?.data.imgurl} alt="" /> :
                         <Avatar sx={{ width: '8rem', height: '8rem' }} />}
                     <label htmlFor="fileInput">
                         <div className="addAPhoto">

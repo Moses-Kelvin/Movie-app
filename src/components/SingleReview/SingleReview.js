@@ -72,7 +72,7 @@ const SingleReview = () => {
                         key={comment.id}
                         userComment={comment.data.comment}
                         name={comment.data.name}
-                        imgUrl={comment.data.imgUrl}
+                        userId={comment.data.userId}
                         id={comment.id}
                         setUserInput={setUserInput}
                         setCommentID={setCommentID}
