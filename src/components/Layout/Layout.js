@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import Navbar from "./Navbar/Navbar";
@@ -6,7 +6,7 @@ import { showPopUpMsg } from "../../store/features/addFavouriteSlice";
 import AddedToFavourite from '../UI/AddedToFavourite';
 import { useDispatch, useSelector } from "react-redux";
 
-const Layout = ({ children, setSearchIsVisible }) => {
+const Layout = ({ children, }) => {
 
     const popUpMsg = useSelector((state) => state.FavouritePopUp.message);
     const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Layout = ({ children, setSearchIsVisible }) => {
     return (
         <Fragment>
             {popUpMsg && <AddedToFavourite popUpMsg={popUpMsg} />}
-            {!userOnAuthPage && <Navbar setSearchIsVisible={setSearchIsVisible} />}
+            {!userOnAuthPage && <Navbar />}
             <main style={{ height: userOnAuthPage && '100%' }}>{children}</main>
             {!userOnAuthPage && <Footer />}
         </Fragment>
