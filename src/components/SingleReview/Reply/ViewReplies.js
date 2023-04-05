@@ -39,7 +39,7 @@ const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserIn
                         setEditSingleComment={setEditSingleComment}
                         setUserInput={setUserInput}
                         name={currentComment.name}
-                        imgUrl={currentComment.imgUrl} />
+                         userId={currentComment.userId} />
                     <p>{currentComment.comment}</p>
                 </div>
             </div>

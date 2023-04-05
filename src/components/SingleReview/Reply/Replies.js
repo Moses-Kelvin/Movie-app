@@ -33,9 +33,9 @@ const Replies = ({setEditReply, setReplyId, setUserInput}) => {
             {replies.map(reply =>
                 <Reply
                     key={reply.id}
+                    userId={reply.data.userId}
                     userReply={reply.data.reply}
                     name={reply.data.name}
-                    imgUrl={reply.data.imgUrl}
                     replyId={reply.id}
                     setEditReply={setEditReply}
                     setReplyId={setReplyId}

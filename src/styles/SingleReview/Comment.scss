@@ -78,3 +78,9 @@
     color: $whiteColor;
     font-weight: bold;
 }
+
+@media (max-width: 500px) {  
+    .reply {
+        width: 80%;
+    }
+}

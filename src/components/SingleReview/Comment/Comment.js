@@ -5,17 +5,17 @@ import Votes from "./Votes";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { db } from "../../../firebase";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
+import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
 
 
-const SingleReply = ({ username, reply, img, movieId, id, tvShowId }) => {
-    const { pathname } = useLocation();
-
-    const onTvShowsPath = pathname.includes("TvShows");
+const SingleReply = ({ username, reply, userId, id}) => {
+    
+    const profilePic = useFetchProfilePic(userId);
 
     return (
         <div className="singleReply">
-            <img src={img} alt="" />
-            <Link to={`${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`} className="singleReply-username">
+            <img src={profilePic} alt="" />
+            <Link to={`${id}`} className="singleReply-username">
                 <h4>{username}</h4>
             </Link>
             <p>{reply.length >= 40 ? `${reply.slice(0,40)}...` : reply}</p>
@@ -76,11 +76,9 @@ const Comment = (props) => {
                 {replyList.length < 3 && replyList.map(reply =>
                     <SingleReply
                         key={reply.id}
-                        img={reply.data.imgUrl}
+                        userId={reply.data.userId}
                         reply={reply.data.reply}
                         username={reply.data.name}
-                        movieId={movieId}
-                        tvShowId={tvShowId}
                         id={id}
                     />
                 )}

@@ -5,8 +5,26 @@ import TvShowGrid from "../../components/TvShows/TvShowGrid";
 
 
 const TvShows = () => {
+
     const theme = useTheme();
-    const mobileScreen = useMediaQuery(theme.breakpoints.up('sm'));
+    const lgScreen = useMediaQuery(theme.breakpoints.up('sm'));
+    const mdScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+     
+    const largeScreenLayout = (
+        <>
+            <TvShowGrid ent="movies" />
+            <MovieSearch />
+        </>
+    );
+
+    const MediumAndSmallScreenLayout = (
+        <>
+            <MovieSearch />
+            <TvShowGrid ent="movies" />
+        </>
+    );
+
 
     return (
         <>
@@ -14,9 +32,7 @@ const TvShows = () => {
                 <h1>TVSHOWS LISTING - GRID</h1>
             </div>
             <section className="TVShow-section">
-                {!mobileScreen && <MovieSearch />}
-                <TvShowGrid ent="Series" />
-                {mobileScreen && <MovieSearch />}
+            {(!lgScreen || mdScreen) ? MediumAndSmallScreenLayout : largeScreenLayout}
             </section>
         </>
     )

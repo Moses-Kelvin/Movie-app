@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import '../../../styles/SingleReview/CommentHeader.scss';
+import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
 
 const CommentHeader = (props) => {
 
@@ -14,7 +15,7 @@ const CommentHeader = (props) => {
         sentAt, name, userId, id, setEditComment, setEditReply, setReplyId,
         setUserInput, setEditSingleComment } = props
 
-    const [profilePics, setProfilePics] = useState([]);
+        const profilePic = useFetchProfilePic(userId);
 
     const { commentId, movieId, tvShowId } = useParams();
 
@@ -28,18 +29,7 @@ const CommentHeader = (props) => {
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
-    useEffect(() => {
-        onSnapshot(collection(db, `users/${userId}/ProfilePics`),
-            orderBy('timestamp', 'asc'), (snapshot) => {
-                setProfilePics(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
-        )
-    }, [userId]);
-
-    // console.log(profilePics[0]?.data.imgurl);
+    console.log(profilePic)
 
 
     const deleteReview = async (id, replyId) => {
@@ -93,7 +83,7 @@ const CommentHeader = (props) => {
     return (
         <div className="commentHeader">
             <div>
-                {profilePics.length !== 0 ? <img src={profilePics[0]?.data.imgurl} alt="" />
+                {profilePic ? <img src={profilePic} alt="" />
                     : <Avatar sx={{ width: avatarWidth, height: avatarHeight }} />}
                 <h4>{name}</h4>
                 <h5>7hr ago</h5>

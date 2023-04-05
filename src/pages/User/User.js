@@ -17,7 +17,9 @@ const User = () => {
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     const theme = useTheme();
-    const mobileScreen = useMediaQuery(theme.breakpoints.up('sm'));
+    const smScreen = useMediaQuery(theme.breakpoints.up('sm'));
+    const mdScreen = useMediaQuery(theme.breakpoints.down('md'));
+
 
     const {pathname} = useLocation();
     const onFavouriteMoviesPath = pathname.includes("Favourite-Movies");
@@ -39,12 +41,12 @@ const User = () => {
     return (
         <section className="User-section">
             <div>
-                {!mobileScreen && profileName}
+                {(!smScreen || mdScreen) && profileName}
                 <UserProfile />
             </div>
             <div>
-                {!mobileScreen && <h2>{header}</h2>}
-                {mobileScreen && profileName}
+                {(smScreen || mdScreen) && <h2>{header}</h2>}
+                {(!smScreen || !mdScreen) && profileName}
                 {element}
             </div>
         </section>

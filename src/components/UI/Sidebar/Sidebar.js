@@ -7,10 +7,16 @@ import SidebarLinks from './SidebarLinks';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebase';
+import { useFetchUserDataQuery } from '../../../store/features/userDataSlice';
+import useFetchProfilePic from '../../../hooks/use-fetchProfilePic';
 
-const SidebarOverlay = ({ setOpenSidebar, logUserOut }) => {
+const SidebarOverlay = ({ setOpenSidebar, logUserOut}) => {
 
     const [user] = useAuthState(auth);
+
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
+
+    const profilePic = useFetchProfilePic(currentUser?.docId);
 
     return (
         <section className="sidebar">
@@ -20,8 +26,10 @@ const SidebarOverlay = ({ setOpenSidebar, logUserOut }) => {
                 <div ></div>
             </div>
             <div className="sidebar-profile">
-                <AccountCircle sx={{ fontSize: '3rem', paddingRight: '0.5rem' }} />
-                <h3>Moses23</h3>
+                {profilePic ?
+                    <img src={profilePic} alt="" />
+                    : <AccountCircle sx={{ fontSize: '3rem', paddingRight: '0.5rem' }} />}
+                <h3>{currentUser?.data.name}</h3>
                 <ArrowBack
                     onClick={() => setOpenSidebar(false)}
                     className="sidebar-arrowback" />
@@ -36,8 +44,8 @@ const SidebarOverlay = ({ setOpenSidebar, logUserOut }) => {
                 {!user && <Link to="/SignUp">
                     <p>SigUup</p>
                 </Link>}
-                { user && <p onClick={() => logUserOut()}>Logout</p>}
-                {user &&<Link to="users/kelvin/settings">
+                {user && <p onClick={() => logUserOut()}>Logout</p>}
+                {user && <Link to="users/kelvin/settings">
                     <Settings />
                     <p>Settings</p>
                 </Link>}
@@ -51,7 +59,7 @@ const Sidebar = ({ setOpenSidebar, logUserOut }) => {
         <>
             {ReactDOM.createPortal(<BackDrop />, document.getElementById("overlays"))}
             {ReactDOM.createPortal(<SidebarOverlay setOpenSidebar={setOpenSidebar}
-                logUserOut={logUserOut}
+                logUserOut={logUserOut} 
             />, document.getElementById("overlays"))}
         </>
     )

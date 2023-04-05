@@ -54,3 +54,17 @@
         padding: 1rem 0;
     }
 }
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1000px)  {
+    .MovieSearch-section {
+        margin-bottom: 3rem;
+        >div:nth-child(1) {
+            width: 90%;
+        }
+    }
+    .MovieSearch-card {
+        height: fit-content;
+        width: 90%;
+        padding: 1rem 0;
+    }
+}

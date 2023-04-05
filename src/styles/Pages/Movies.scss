@@ -24,3 +24,11 @@
         padding-top: 6rem;
     }
 }
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1000px) { 
+    .Movies-section,
+    .TVShow-section {
+        grid-template-columns: 1fr;
+        padding-top: 6rem;
+    }
+}

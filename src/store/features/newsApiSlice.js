@@ -8,7 +8,7 @@ export const newsApiSlice = createApi({
     endpoints: (builder) => ({
         getTopStoriesNews: builder.query({
             query: () => `top-headlines?country=us&category=entertainment&apiKey=${api_key}`,
-        }),
+        }), 
     }),
 });
 

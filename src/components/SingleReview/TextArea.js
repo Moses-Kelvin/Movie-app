@@ -1,13 +1,14 @@
 import { Avatar } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import React from "react";
 import InputField from "../UI/InputField";
 import '../../styles/SingleReview/TextArea.scss';
 import Button from "../UI/Button";
 import { useLocation, useParams } from "react-router-dom";
-import { addDoc, collection, doc, onSnapshot, orderBy, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc,  serverTimestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
+import useFetchProfilePic from "../../hooks/use-fetchProfilePic";
 
 
 const TextArea = (props) => {
@@ -15,26 +16,16 @@ const TextArea = (props) => {
     const { placeHolder, action, setEditComment, id, setUserInput, setEditSingleComment,
         userInput, replyId, setEditReply } = props;
 
-        const [profilePics, setProfilePics] = useState([]);
 
     const [user] = useAuthState(auth);
 
     const { data: userData, currentUser } = useFetchUserDataQuery(user?.uid);
 
+    const profilePic = useFetchProfilePic(currentUser?.docId);
+
     const { movieId, commentId, tvShowId } = useParams();
 
     const { pathname } = useLocation();
-
-    useEffect(() => {
-        onSnapshot(collection(db, `users/${currentUser?.docId}/ProfilePics`),
-            orderBy('timestamp', 'asc'), (snapshot) => {
-                setProfilePics(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
-        )
-    }, [currentUser?.docId]);
 
 
     const sendMessage = async () => {
@@ -89,8 +80,9 @@ const TextArea = (props) => {
     return (
         <div className="textArea">
             <div>
-                {profilePics.length !==0 ? <img src={profilePics[0]?.data.imgurl} alt="" /> :
-                    <Avatar sx={{ color: 'white' }} />}
+                {profilePic ?
+                    <img src={profilePic} alt="" />
+                    : <Avatar sx={{ color: 'white' }} />}
                 <InputField
                     id="standard-basic"
                     placeholder={`${placeHolder}`}
@@ -110,4 +102,4 @@ const TextArea = (props) => {
 };
 
 
-export default memo(TextArea);
+export default TextArea;

@@ -40,6 +40,7 @@
         font-size: 1.2rem;
         list-style: none;
     }
+
     img {
         width: 2.5rem;
         height: 2.5rem;
@@ -94,7 +95,7 @@
     color: $whiteColor;
     border: none;
 }
- 
+
 
 @media (max-width: 500px) {
     .navbar {
@@ -115,5 +116,35 @@
     .active::after {
         content: "";
         bottom: -1rem;
+    }
+}
+
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    .navbar {
+        grid-template-columns: 1fr 5fr 4fr;
+
+        h1 {
+            font-size: 1.7rem;
+            padding-left: 2rem;
+        }
+
+        a {
+            font-size: 0.9rem;
+        }
+    }
+
+    .navbar-icons {
+        padding-right: 1rem;
+    }
+
+    .active::after {
+        bottom: -1.8rem;
+    }
+
+    .log-in,
+    .sign-up,
+    .log-out {
+        font-size: 0.8rem;
     }
 }

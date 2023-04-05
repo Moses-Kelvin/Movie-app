@@ -38,3 +38,11 @@
     }
 }
 
+@media screen and (min-device-width: 768px) and (max-device-width: 1000px) {
+    .UserProfileDetails-section_details {
+        width: 100%;
+        border-radius: 0;
+        margin-top: 2rem;
+    }
+}
+

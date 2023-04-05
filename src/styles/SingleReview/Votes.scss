@@ -8,8 +8,7 @@
     width: 3rem;
     height: 5rem;
     border-radius: 0.8rem;
-    margin-bottom: 0.5rem;
-    margin: 1rem 0 0 1rem;
+    margin: 1rem 0 0.5rem 1rem;
     p {
         margin: 0;
     }
@@ -17,4 +16,15 @@
 
 .reply-votes {
     width: 2rem;
+}
+
+@media (max-width: 500px) { 
+    .votes {
+        width: 2rem;
+    }
+
+    .reply-votes {
+        width: 1.5rem;
+        margin-left: 0.6rem;
+    }
 }

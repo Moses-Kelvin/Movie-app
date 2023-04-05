@@ -1,6 +1,6 @@
 .commentHeader {
     display: grid;
-    grid-template-columns: 6fr 4fr;
+    grid-template-columns: 9fr 1fr;
     >div:nth-child(1), >div:nth-child(2) {
         display: flex;
         align-items: center;
@@ -17,5 +17,17 @@
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
+    }
+}
+
+@media (max-width: 500px) { 
+    .commentHeader {
+         p {
+            margin-top: 0;
+         }
+        >div:nth-child(2) {
+            flex-direction: column;
+            row-gap: 0.5rem;
+        }
     }
 }

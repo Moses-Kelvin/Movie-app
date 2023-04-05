@@ -28,3 +28,19 @@
     }
   }
 }
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1000px) {
+  .User-section {
+    grid-template-columns: 1fr;
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    h2 {
+      color: $textColor;
+      font-family: sans-serif;
+      margin: 2rem 0 0 1rem;
+      letter-spacing: 0.2rem;
+    }
+}
+}

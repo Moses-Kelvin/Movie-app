@@ -3,14 +3,14 @@ import CommentHeader from "../Comment/CommentHeader";
 import '../../../styles/SingleReview/Comment.scss';
 import Votes from "../Comment/Votes";
 
-const Reply = ({userReply, name, imgUrl, replyId, setEditReply,setReplyId, setUserInput}) => {
+const Reply = ({userReply, name, replyId, setEditReply,setReplyId, setUserInput, userId}) => {
     return (
         <div className="comment reply">
             <Votes className="reply-votes" replyId={replyId} type="reply"/>
             <div>
                 <CommentHeader 
                     name={name}
-                    imgUrl={imgUrl}
+                    userId={userId}
                     replyId={replyId}
                     setEditReply={setEditReply}
                     setReplyId={setReplyId}

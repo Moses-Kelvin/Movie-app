@@ -6,15 +6,14 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchModal from "../../UI/Search/SearchModal";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, logout } from "../../../firebase";
+import { auth, logout } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
-import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import Sidebar from "../../UI/Sidebar/Sidebar";
+import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
 
 const Navbar = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
-    const [profilePics, setProfilePics] = useState([]);
     const [searchIsVisible, setSearchIsVisible] = useState(false);
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
@@ -25,22 +24,13 @@ const Navbar = () => {
     const theme = useTheme();
     const onDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
+    const profilePic = useFetchProfilePic(currentUser?.docId);
+
     const logUserOut = () => {
         logout();
         navigate("/home")
     };
 
-
-    useEffect(() => {
-        onSnapshot(collection(db, `users/${currentUser?.docId}/ProfilePics`),
-            orderBy('timestamp', 'asc'), (snapshot) => {
-                setProfilePics(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
-        )
-    }, [currentUser?.docId]);
 
     return (
         <>
@@ -87,8 +77,8 @@ const Navbar = () => {
                     <Search sx={{ fontSize: '30px', paddingRight: '1rem' }}
                         onClick={() => setSearchIsVisible(true)} />
                     {user && <Link to={`User/${currentUser?.data.name}`}>
-                        {profilePics.length !== 0 ?
-                            <img src={profilePics[0]?.data.imgurl} alt="" />
+                        {profilePic?
+                            <img src={profilePic} alt="" />
                             : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />}
                     </Link>}
                     {(!user && onDesktop) && <Link to='/LogIn'>

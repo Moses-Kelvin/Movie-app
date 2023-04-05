@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../styles/Movies/MovieRow.scss';
 import '../../styles/Movies/MoviesGrid.scss';
-import { FormControl, InputLabel, MenuItem, Pagination, Select, Typography } from "@mui/material";
+import { Pagination, Typography } from "@mui/material";
 import { useGetPopularTvShowsQuery } from "../../store/features/moviesApiSlice";
 import TvShowGridCard from "./TvShowGridCard";
 
@@ -24,36 +24,10 @@ const TvShowGrid = ({ ent }) => {
 
 
 
-    const formControl = (
-        <FormControl className="MovieGrid-formControl">
-            <InputLabel variant="filled" id="demo-simple-select-label">Filter Movies</InputLabel>
-            <Select variant="filled"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                // value={filter || query}
-                // onChange={handleChange}
-            // label={search}
-            >
-                <MenuItem value="Popularity Ascending">Popularity Ascending</MenuItem>
-                <MenuItem value="Popularity Descending">Popularity Descending</MenuItem>
-                <MenuItem value="Rating Ascending">Rating Ascending</MenuItem>
-                <MenuItem value="Rating Descending">Rating Descending</MenuItem>
-                <MenuItem value="Release Year Ascending">Release Year Ascending</MenuItem>
-                <MenuItem value="Release Year Descending">Release Year Descending</MenuItem>
-            </Select>
-        </FormControl>
-    );
-
     return (
         <section className="MoviesGrid-section">
             <div className="MoviesGrid-header">
                 <p>Found 70 {ent} in total</p>
-                <div>
-                    <div className="MovieGrid-sortBy">
-                        <p>Sort by:</p>
-                    </div>
-                    {formControl}
-                </div>
             </div>
             <div className="MoviesGrid-container">
                 {upcomingMoviesResults.map((data, index) =>

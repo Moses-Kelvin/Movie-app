@@ -123,11 +123,16 @@
     .featuredMovie {
         h1 {
             font-size: 2rem;
-            // max-width: 30%;
+            letter-spacing: 0;
+        }
+
+        >div:nth-child(1) {
+            padding-left: 1rem;
         }
     }
 
-    // .featuredMovie-btn {
-    //     margin-right: 2rem;
-    // }
+    .slideShowDots {
+        column-gap: 0.5rem;
+    }
+
 }
