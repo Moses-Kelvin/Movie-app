@@ -8,9 +8,9 @@ const MovieRow = ({ movieHeader, MoviesDiscoverData, addToFav }) => {
                 <div className="MovieRow">
                         <h1>{movieHeader}</h1>
                         <div className="MovieRow-Container horizontalScroll">
-                                {MoviesDiscoverData.map((data, index) =>
+                                {MoviesDiscoverData?.map((data) =>
                                         <MovieCard 
-                                           key={index}
+                                           key={data.id}
                                            data={data}
                                            addToFav={addToFav}
                                         />

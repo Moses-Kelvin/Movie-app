@@ -7,7 +7,6 @@
     background-image: url(../../assets/images/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    font-family: sans-serif;
 
     p {
         color: rgb(168, 161, 161);
@@ -38,15 +37,20 @@
     column-gap: 0.5rem;
 }
 
-.footer-newsletter {
-    >p {
-        font-size: 0.9rem;
-        max-width: 70%;
-    }
+.footer-tmdbIcon {
+     img {
+        width: 8rem;
+     }
 }
 
 .footer-account {
     cursor: pointer;
+}
+
+.footer-quicklinks {
+    a {
+        color: rgb(168, 161, 161);
+    }
 }
  
 
@@ -61,12 +65,15 @@
         }
     }
 
-    .footer-newsletter {
-        display: grid;
-        justify-items: center;
+    .footer-tmdbIcon {
+       width: 6rem;
+}
+}
 
-        >p {
-            text-align: center;
+@media screen and (min-device-width: 768px) and (max-device-width: 1000px) { 
+    .footer {
+        >div:nth-child(1) {
+            margin-left: 2rem;
         }
     }
 }

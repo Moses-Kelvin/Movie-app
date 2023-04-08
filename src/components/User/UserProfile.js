@@ -5,10 +5,11 @@ import { AddAPhoto, Settings } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { addDoc, collection, doc, onSnapshot, orderBy, updateDoc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
-import ProfilePreview from "../UI/ProfilePreview";
+import ProfilePreview from "../UI/Modal/ProfilePreview";
+import Spinner from "../UI/Spinners/Spinner";
 
 
 const UserProfile = () => {
@@ -30,15 +31,6 @@ const UserProfile = () => {
         }
     }, [photoUrl, refetch])
 
-    // useEffect(() => {
-    //     const updatePhoto = async () => {
-    //         const userRef = doc(db, "users", currentUser?.docId);
-    //         await updateDoc(userRef, {
-    //             imgUrl: photoUrl
-    //         })
-    //     }
-    //     if (photoUrl !== null) { updatePhoto(); }
-    // }, [photoUrl, currentUser?.docId]);
 
     useEffect(() => {
         const addProfilePic = async () => {
@@ -99,7 +91,10 @@ const UserProfile = () => {
 
     return (
         <>
-            {file && <ProfilePreview file={file} handleSubmit={handleSubmit} onClose={() => setFile(null)} />}
+            {file && <ProfilePreview
+                file={file}
+                handleSubmit={handleSubmit}
+                onClose={() => setFile(null)} />}
             <section className="userProfile-section">
                 <div className="userProfile-avatar">
                     {profilePics.length !== 0 ?

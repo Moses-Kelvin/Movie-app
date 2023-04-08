@@ -24,8 +24,6 @@ const User = () => {
     const {pathname} = useLocation();
     const onFavouriteMoviesPath = pathname.includes("Favourite-Movies");
 
-    const profileName = <h1>{currentUser?.data.name} PROFILE</h1>;
-
     const header = onFavouriteMoviesPath ? "Favourite Movies" : "Profile Details";
 
     console.log(currentUser)
@@ -41,12 +39,10 @@ const User = () => {
     return (
         <section className="User-section">
             <div>
-                {(!smScreen || mdScreen) && profileName}
                 <UserProfile />
             </div>
             <div>
                 {(smScreen || mdScreen) && <h2>{header}</h2>}
-                {(!smScreen || !mdScreen) && profileName}
                 {element}
             </div>
         </section>

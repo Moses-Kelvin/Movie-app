@@ -3,13 +3,19 @@ import CommentHeader from "../Comment/CommentHeader";
 import '../../../styles/SingleReview/Comment.scss';
 import Votes from "../Comment/Votes";
 
-const Reply = ({userReply, name, replyId, setEditReply,setReplyId, setUserInput, userId}) => {
+const Reply = (props) => {
+
+    const { userReply, name, replyId, setEditReply,
+        setReplyId, setUserInput, userId, sentAt, replyingTo } = props;
+
     return (
         <div className="comment reply">
-            <Votes className="reply-votes" replyId={replyId} type="reply"/>
+            <Votes className="reply-votes" replyId={replyId} type="reply" />
             <div>
-                <CommentHeader 
+                <CommentHeader
                     name={name}
+                    replyingTo={replyingTo}
+                    sentAt={sentAt}
                     userId={userId}
                     replyId={replyId}
                     setEditReply={setEditReply}
@@ -20,7 +26,7 @@ const Reply = ({userReply, name, replyId, setEditReply,setReplyId, setUserInput,
                     iconSize="1rem"
                     type="reply"
                 />
-                <p>{userReply}</p>
+                    <p><span style={{color: 'blue'}}>{replyingTo}</span> {userReply}</p>
             </div>
         </div>
     )

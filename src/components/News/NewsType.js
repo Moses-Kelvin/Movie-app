@@ -7,20 +7,19 @@ const NewsType = ({ NewsHeader, TopStoriesNewsData }) => {
     const { pathname } = useLocation();
     const userOnNewsPage = pathname.includes('News');
 
-    // const utcDate = Date.UTC(TopStoriesNewsData.publishedAt)
 
-
-    return (<section className="NewsType-section">
-        <div className="NewsType-header">
-            <h1>{NewsHeader}</h1>
-            {!userOnNewsPage &&
-                <Link to="/News">
-                    SEE ALL NEWS...
-                </Link>
-            }
-        </div>
-        <div className="NewsType-body">
-            {TopStoriesNewsData.map((news, index) =>
+    return (
+        <section className="NewsType-section">
+            <div className="NewsType-header">
+                <h1>{NewsHeader}</h1>
+                {!userOnNewsPage &&
+                    <Link to="/News">
+                        SEE ALL NEWS...
+                    </Link>
+                }
+            </div>
+            <div className="NewsType-body  horizontalScroll">
+                {TopStoriesNewsData?.map((news, index) =>
                     <div className="News" key={index}>
                         <img src={news.urlToImage} alt="" />
                         <h2>{news.title}</h2>
@@ -33,9 +32,9 @@ const NewsType = ({ NewsHeader, TopStoriesNewsData }) => {
                             <p>{new Date(news.publishedAt).toDateString()}</p>
                         </div>
                     </div>
-            )}
-        </div>
-    </section>
+                )}
+            </div>
+        </section>
     )
 };
 

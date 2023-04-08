@@ -9,15 +9,21 @@ import { Star, RemoveCircleOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Button from "../../components/UI/Button";
 import Oops from "../../assets/images/oops.png";
+import { useRef } from "react";
 
 const UserFavouriteMovies = () => {
 
     const [favouriteMovies, setFavouriteMovies] = useState([]);
+    const scrollToUserFavourite = useRef();
 
     const [user] = useAuthState(auth);
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
+    
+    useEffect(() => {
+        scrollToUserFavourite.current.scrollIntoView({ behavior: "smooth" });
+    }, []);
 
     useEffect(() => {
         onSnapshot(collection(db, `users/${currentUser?.docId}/Favourites`), orderBy(
@@ -45,15 +51,15 @@ const UserFavouriteMovies = () => {
 
     let moviesFound;
     if (favouriteMovies.length === 0) {
-        moviesFound = "found no movie"
+        moviesFound = "found no favourite"
     } else if (favouriteMovies.length === 1) {
-        moviesFound = "found 1 Movie in total"
+        moviesFound = "found 1 favourite in total"
     } else {
-        moviesFound = `found ${favouriteMovies.length} Movies in total`
+        moviesFound = `found ${favouriteMovies.length} favourites in total`
     }
 
     return (
-        <section className="favourite-movies">
+        <section className="favourite-movies" ref={scrollToUserFavourite}>
             <section className="MoviesGrid-section favourite-movies-Section">
                 <div className="MoviesGrid-header">
                     <p>{moviesFound}</p>

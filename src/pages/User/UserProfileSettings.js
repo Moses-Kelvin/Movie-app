@@ -3,7 +3,7 @@ import ChangePassword from "../../components/Settings/ChangePassWord";
 import EditProfile from "../../components/Settings/EditProfile";
 import '../../styles/Pages/UserProfieSettings.scss';
 
-const UserProfieSettings = () => {
+const UserProfileSettings = () => {
     return (
         <section className="UserProfieSettings-section">
             <h1>SETTINGS</h1>
@@ -21,4 +21,4 @@ const UserProfieSettings = () => {
     )
 };
 
-export default UserProfieSettings;
+export default UserProfileSettings;

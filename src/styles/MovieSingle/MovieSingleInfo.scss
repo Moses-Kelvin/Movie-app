@@ -1,13 +1,15 @@
 @import '../../Variables/Variable.scss';
 
 .MovieSingleInfo_section {
+    display: grid;
+    align-self: start;
+    justify-self: start;
     color: $whiteColor;
-    width: 85%;
-    font-family: sans-serif;
-    padding-left: 4rem;
+    width: 100%;
+    margin-left: 2rem;
 
     img {
-        width: 100%;
+        width: 80%;
         border-radius: 0.2rem;
     }
 
@@ -17,6 +19,7 @@
         color: $textColor;
         text-align: justify;
         text-justify: inter-word;
+        width: 80%;
     }
 
     h1 {
@@ -24,6 +27,7 @@
         letter-spacing: 0.4rem;
         margin-bottom: 0.2rem;
         color: $whiteColor;
+        width: 80%;
     }
 }
 
@@ -40,11 +44,13 @@
 
 @media (max-width: 500px) {
     .MovieSingleInfo_section {
-        padding-left: 0;
-        width: 90%;
-        margin: auto;
+        align-self: center;
         h1 {
             font-size: 1.5rem;
+        }
+
+        img {
+            width: 80%;
         }
     }
 }

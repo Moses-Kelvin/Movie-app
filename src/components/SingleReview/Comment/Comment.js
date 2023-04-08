@@ -6,11 +6,22 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { db } from "../../../firebase";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 
-const SingleReply = ({ username, reply, userId, id}) => {
-    
+const SingleReply = ({ username, reply, userId, id }) => {
+
+    const theme = useTheme();
+    const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const profilePic = useFetchProfilePic(userId);
+
+    const lgScreenLayout = (
+            <p>{reply.length >= 40 ? `${reply.slice(0, 40)}...` : reply}</p>
+    );
+
+    const smScreenLayout = (
+            <p>{reply.length >= 6 ? `${reply.slice(0, 6)}...` : reply}</p>
+    );
 
     return (
         <div className="singleReply">
@@ -18,7 +29,7 @@ const SingleReply = ({ username, reply, userId, id}) => {
             <Link to={`${id}`} className="singleReply-username">
                 <h4>{username}</h4>
             </Link>
-            <p>{reply.length >= 40 ? `${reply.slice(0,40)}...` : reply}</p>
+            {smScreen ? smScreenLayout : lgScreenLayout}
         </div>
     )
 };
@@ -31,7 +42,7 @@ const Comment = (props) => {
     const onTvShowsPath = pathname.includes("TvShows");
 
     const { userComment, name, userId, id, setUserInput, setEditComment,
-        setCommentID, setEditReply, setReplyId } = props;
+        setCommentID, setEditReply, setReplyId, sentAt } = props;
 
     const [replyList, setReplyList] = useState([]);
 
@@ -39,24 +50,25 @@ const Comment = (props) => {
 
     useEffect(() => {
         onSnapshot(collection(db,
-             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Replies`), orderBy(
-            'timestamp', 'asc'), (snapshot) => {
-                setReplyList(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
+            `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}/Replies`), orderBy(
+                'timestamp', 'asc'), (snapshot) => {
+                    setReplyList(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                }
         )
-    }, [id, movieId]);
+    }, [id, movieId, onTvShowsPath, tvShowId]);
 
 
     return (
         <div className="comment-section">
             <div className="comment">
-                <Votes username={name} id={id} type="commentVote"/>
+                <Votes username={name} id={id} type="commentVote" />
                 <div>
                     <CommentHeader
                         name={name}
+                        sentAt={sentAt}
                         userId={userId}
                         id={id}
                         setCommentID={setCommentID}

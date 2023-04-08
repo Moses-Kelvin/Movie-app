@@ -8,7 +8,6 @@
     padding: 4rem 0 3rem 0;
     a {
         color: $blueColor;
-        // margin: 2rem 3rem 0 0;
     }
 }
 
@@ -22,7 +21,6 @@
     p,
     h2 {
         padding: 0 1rem;
-        font-family: sans-serif;
     }
     p {
         color: $textColor;
@@ -33,32 +31,6 @@
     }
 }
     
-    .NewsType-body::-webkit-scrollbar {
-        display: block;
-        height: 0.6rem;
-    }
-    
-    .NewsType-body::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px $darkGreyColor;
-        border-radius: 0.5rem;
-    }
-    
-    .NewsType-body::-webkit-scrollbar-thumb {
-        background: $darkGreyColor;
-        border-radius: 0.5rem;
-    }
-    
-    
-    .NewsType-body {
-        scrollbar-width: thin !important;
-    }
-    
-    
-    @media screen and (-webkit-min-device-pixel-ratio: 0) {
-        .NewsType-body {
-            overflow-x: overlay;
-        }
-    }
 
 .News {
     background-color: $darkGreyColor;
@@ -87,7 +59,6 @@
 .NewsType-info, .NewsType-header {
     display: flex;
     justify-content: space-between;
-    font-family: sans-serif;
 }
 
 .NewsType-header {
@@ -97,9 +68,6 @@
         padding-left: 3.5rem;
         letter-spacing: 0.1rem;
     }
-    // >p {
-    //     margin-top: 2rem;
-    // }
 }
 
 @media (max-width: 500px) { 
@@ -119,7 +87,6 @@
     .NewsType-body {
         h2 {
             font-size: 0.9rem;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
     }
 }

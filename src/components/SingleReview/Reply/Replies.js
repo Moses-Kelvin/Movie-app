@@ -33,6 +33,8 @@ const Replies = ({setEditReply, setReplyId, setUserInput}) => {
             {replies.map(reply =>
                 <Reply
                     key={reply.id}
+                    sentAt={new Date(reply.data.sentAt?.toDate())}
+                    replyingTo={reply.data.replyingTo}
                     userId={reply.data.userId}
                     userReply={reply.data.reply}
                     name={reply.data.name}

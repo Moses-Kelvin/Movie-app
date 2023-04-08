@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { BackDrop } from '../Search/SearchModal';
+import { BackDrop } from '../Modal/SearchModal';
 import { AccountCircle, ArrowBack, Login, Settings } from '@mui/icons-material';
 import "../../../styles/UI/Sidebar/Sidebar.scss";
 import SidebarLinks from './SidebarLinks';
@@ -57,7 +57,7 @@ const SidebarOverlay = ({ setOpenSidebar, logUserOut}) => {
 const Sidebar = ({ setOpenSidebar, logUserOut }) => {
     return (
         <>
-            {ReactDOM.createPortal(<BackDrop />, document.getElementById("overlays"))}
+            {ReactDOM.createPortal(<BackDrop handleClick={() => setOpenSidebar(false)} />, document.getElementById("overlays"))}
             {ReactDOM.createPortal(<SidebarOverlay setOpenSidebar={setOpenSidebar}
                 logUserOut={logUserOut} 
             />, document.getElementById("overlays"))}

@@ -3,9 +3,8 @@
 .MovieSingleMoreInfo-section {
     color: $textColor;
     border-left: 0.5rem solid $darkGreyColor;
-    font-family: sans-serif;
     height: fit-content;
-    width: 95%;
+    width: 100%;
     margin-top: 6rem;
     border-radius: 0.6rem;
      h3 {
@@ -17,7 +16,8 @@
 }
 
 .genres {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     column-gap: 1rem;
     color: $whiteColor;
 }

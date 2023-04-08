@@ -9,15 +9,16 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Addfavourite } from "../../store/actions/addFavourite";
+import { useDispatch, useSelector } from "react-redux";
+import { AddBump, Addfavourite } from "../../store/actions/addFavourite";
 
-const TvShowCard = ({data, addToFav}) => {
+const TvShowCard = ({data}) => {
 
-    const [favColor, setFavColor] = useState("");
+    const [favColor, setFavColor] = useState("white");
     const [user] = useAuthState(auth);
 
     const dispatch = useDispatch();
+    const isAddedToFav = useSelector((state) => state.Favourite.isFav);
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
@@ -27,9 +28,7 @@ const TvShowCard = ({data, addToFav}) => {
                 const movie = snapshot.docs.find(doc => data.name === doc.data().title);
                 if (movie) {
                     setFavColor("red");
-                } else {
-                    setFavColor("white")
-                }
+                }  
             }
         )
     }, [currentUser?.docId, data]);
@@ -42,6 +41,12 @@ const TvShowCard = ({data, addToFav}) => {
         id: data.id,
         type: "TvShows"
     }
+
+    const addFav = async () => {
+        dispatch(Addfavourite(tvShowData, currentUser.docId));
+        dispatch(AddBump(tvShowData, currentUser.docId));
+       
+    };
 
     return (
         <div className="movie">
@@ -56,10 +61,8 @@ const TvShowCard = ({data, addToFav}) => {
                         {data.first_air_date.split("-")[0]}
                     </h4>
                     <div>
-                      {user &&  <Favorite
-                            onClick={() =>
-                               dispatch(Addfavourite(tvShowData, currentUser?.docId))
-                                }
+                      {user &&  <Favorite className={isAddedToFav ? "bump" : undefined}
+                            onClick={addFav}
                             sx={{ fontSize: '22px', color: favColor }} />}
                         <span>
                             <Star sx={{ color: 'yellow', fontSize: '22px' }} />

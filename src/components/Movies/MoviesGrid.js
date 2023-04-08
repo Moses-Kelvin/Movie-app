@@ -1,37 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import '../../styles/Movies/MovieRow.scss';
 import '../../styles/Movies/MoviesGrid.scss';
 import { Pagination, Typography } from "@mui/material";
-import { useGetMoviesDiscoverQuery } from "../../store/features/moviesApiSlice";
+import { useGetUpcomingMoviesQuery } from "../../store/features/moviesApiSlice";
 import MovieGridCard from "./MovieGridCard";
 
 
 const MoviesGrid = ({ ent }) => {
 
     const [page, setPage] = useState(1);
-
-    const upcomingMoviesResult = JSON.parse(localStorage.getItem('upcomingMovies'));
-
-    const upcomingMoviesResults = upcomingMoviesResult.results;
+    const scrollToMovies = useRef();
 
     const handlePageChange = (event, value) => {
         setPage(value);
     }
 
-    const { data } = useGetMoviesDiscoverQuery(page);
+    const { data: movieData, refetch } = useGetUpcomingMoviesQuery(page);
 
+    useEffect(() => {
+        refetch();
+        scrollToMovies.current.scrollIntoView({ behavior: "smooth" });
+    }, [refetch, page]);
 
-
+ 
 
     return (
-        <section className="MoviesGrid-section">
+        <section className="MoviesGrid-section" ref={scrollToMovies}>
             <div className="MoviesGrid-header">
-                <p>Found 70 {ent} in total</p>
+                <p>Found {movieData?.results.length} Movies in total</p>
             </div>
             <div className="MoviesGrid-container">
-                {upcomingMoviesResults.map((data, index) =>
+                {movieData?.results.map((data) =>
                     <MovieGridCard
-                        key={index}
+                        key={data.id}
                         data={data}
                     />
                 )}

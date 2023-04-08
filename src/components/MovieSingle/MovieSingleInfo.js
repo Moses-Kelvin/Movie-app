@@ -21,16 +21,16 @@ const MovieSingleInfo = () => {
     return (
         <section className="MovieSingleInfo_section">
             <div>
-                <h1>{singleMovieResult.original_title}</h1>
-                <p>{new Date(singleMovieResult.release_date).getFullYear()}</p>
+                <h1>{data?.original_title}</h1>
+                <p>{new Date(data?.release_date).getFullYear()}</p>
             </div>
-            <img src={`https://image.tmdb.org/t/p/w1280${singleMovieResult.backdrop_path}`} alt="" />
+            <img src={`https://image.tmdb.org/t/p/w1280${data?.backdrop_path}`} alt="" />
             <div className="MovieSingleInfo_info">
-                <span><Star sx={{ color: 'yellow' }} /> {singleMovieResult.vote_average}</span>
-                <h4>Runtime: {singleMovieResult.runtime}min</h4>
+                <span><Star sx={{ color: 'yellow' }} /> {data?.vote_average}</span>
+                <h4>Runtime: {data?.runtime}min</h4>
             </div>
             <div>
-                <p>{singleMovieResult.overview}</p>
+                <p>{data?.overview}</p>
             </div>
         </section>
     )

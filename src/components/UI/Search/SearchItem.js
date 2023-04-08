@@ -1,14 +1,14 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import  { useNavigate } from "react-router-dom";
 import "../../../styles/UI/Search/SearchItem.scss";
 
-const SearchItem = ({ title, img, overview, id, setSearchIsVisible }) => {
+const SearchItem = ({ title, img, overview, id, setSearchIsVisible, filteredTerm}) => {
 
     const navigate = useNavigate();
 
     const handleClick = (id) => {
         setSearchIsVisible(false);
-        navigate(`/Movies/${id}`);
+        navigate(`/${filteredTerm === "movies" ? "Movies" : "TvShows"}/${id}`);
     };
 
     return (
@@ -16,7 +16,7 @@ const SearchItem = ({ title, img, overview, id, setSearchIsVisible }) => {
             <img src={`https://image.tmdb.org/t/p/w500${img}`} alt="" />
             <div>
                 <h3>{`${title.slice(0, 50)}...`}</h3>
-                <p>{`${overview.slice(0, 40)}...`}</p>
+               {overview && <p>{`${overview.slice(0, 40)}...`}</p>}
             </div>
         </div>
     )

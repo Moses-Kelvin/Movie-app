@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import TextArea from "./TextArea";
 import '../../styles/SingleReview/SingleReview.scss';
 import Comment from "./Comment/Comment";
-import { Navigate, useLocation, useParams, useRoutes } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams, useRoutes } from "react-router-dom";
 import ViewReplies from "./Reply/ViewReplies";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Forum } from "@mui/icons-material";
-import ReviewSpinner from "../UI/Spinners/ReviewSpinner";
+import useFetchProfilePic from "../../hooks/use-fetchProfilePic";
+import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
+import { EmojiEmotions } from "@mui/icons-material";
+import { useRef } from "react";
 
 
 const SingleReview = () => {
@@ -20,6 +23,7 @@ const SingleReview = () => {
     const [replyId, setReplyId] = useState("");
     const [editSingleComment, setEditSingleComment] = useState(false);
     const [userInput, setUserInput] = useState("");
+    const scrollToComments = useRef();
 
     const { movieId, tvShowId } = useParams();
 
@@ -27,6 +31,14 @@ const SingleReview = () => {
 
     const [user] = useAuthState(auth);
 
+    const { data: currentUser } = useFetchUserDataQuery(user?.uid);
+
+    const profilePic = useFetchProfilePic(currentUser?.docId);
+
+    
+    useEffect(() => {
+        scrollToComments.current.scrollIntoView({ behavior: "smooth" });
+    }, []);
 
     useEffect(() => {
         const onTvShowsPath = pathname.includes("TvShows");
@@ -63,35 +75,53 @@ const SingleReview = () => {
     );
 
 
-    const comments = (
-        <section className="MovieSingleReview-section">
-            <h2>{NoOfComment}</h2>
-            <div className="scroller commentScroller">
-                {movieComments.map(comment => (
-                    <Comment
-                        key={comment.id}
-                        userComment={comment.data.comment}
-                        name={comment.data.name}
-                        userId={comment.data.userId}
-                        id={comment.id}
-                        setUserInput={setUserInput}
-                        setCommentID={setCommentID}
-                        setEditComment={setEditComment}
-                    />
-                ))}
+    const LoginInToAddReview = (
+        <div className="LoginInToAddReview">
+            <EmojiEmotions sx={{ color: 'yellow', fontSize: '8rem' }} />
+            <div>
+                <Link to="/LogIn">Login</Link>
+                <p>to Share your thoughts here.</p>
             </div>
-            {movieComments.length === 0 && NoComment}
-            {user && <TextArea placeHolder="Leave your thought here..."
-                action={editComment || editSingleComment ? "Update" : "Comment"}
-                userInput={userInput}
-                setUserInput={setUserInput}
-                id={commentID}
-                setEditComment={setEditComment} />}
+        </div>
+    )
+
+
+    const comments = (
+        <section className="SingleReview-section" ref={scrollToComments}>
+            <h2>{user && NoOfComment}</h2>
+            <div className="review-container">
+                <div className="scroller commentScroller">
+                    {movieComments.map(comment => (
+                        <Comment
+                            key={comment.id}
+                            sentAt={new Date(comment.data.sentAt?.toDate())}
+                            userComment={comment.data.comment}
+                            name={comment.data.name}
+                            userId={comment.data.userId}
+                            id={comment.id}
+                            setUserInput={setUserInput}
+                            setCommentID={setCommentID}
+                            setEditComment={setEditComment}
+                        />
+                    ))}
+                </div>
+                {!user && LoginInToAddReview}
+                {(movieComments.length === 0 && user) && NoComment}
+                {user && <TextArea placeHolder="Leave your thought here..."
+                    action={editComment || editSingleComment ? "Update" : "Comment"}
+                    userInput={userInput}
+                    setUserInput={setUserInput}
+                    id={commentID}
+                    setEditComment={setEditComment}
+                    profilePic={profilePic}
+                />}
+            </div>
         </section>
     );
 
     const Replies = (
-        <section className="MovieSingleReview-section">
+        <section className="SingleReview-section" ref={scrollToComments}>
+            <div className="review-container">
             <div className="scroller commentScroller">
                 <ViewReplies
                     setEditReply={setEditReply}
@@ -106,7 +136,9 @@ const SingleReview = () => {
                 setUserInput={setUserInput}
                 replyId={replyId}
                 setEditReply={setEditReply}
+                profilePic={profilePic}
             />}
+            </div>
         </section>
     );
 

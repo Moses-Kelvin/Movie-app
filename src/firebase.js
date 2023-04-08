@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getStorage } from 'firebase/storage';
+import { firebaseConfig } from "./config";
 import {
   GoogleAuthProvider,
   getAuth,
@@ -17,16 +18,7 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDlMyehpH8wXJNeemRFQZigyTr89dmNKoc",
-  authDomain: "kel-movie-app.firebaseapp.com",
-  projectId: "kel-movie-app",
-  storageBucket: "kel-movie-app.appspot.com",
-  messagingSenderId: "633815461771",
-  appId: "1:633815461771:web:839a92f10decb5c2aec98e",
-  measurementId: "G-Y43GPP6PR4"
-};
+ 
 
 const googleProvider = new GoogleAuthProvider();
 

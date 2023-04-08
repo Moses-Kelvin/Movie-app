@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "../../styles/UI/AddedToFavourite.scss";
-import { BackDrop } from "./Search/SearchModal";
+import "../../../styles/UI/Modal/PopUp.scss";
+ import { BackDrop } from "./SearchModal";
 
 const Message = ({popUpMsg}) => {
     return (
@@ -13,7 +13,7 @@ const Message = ({popUpMsg}) => {
 
 const portalElement = document.getElementById("overlays");
 
-const AddedToFavourite = ({ popUpMsg }) => {
+const PopUp = ({ popUpMsg }) => {
     return (
         <>
             {ReactDOM.createPortal(<BackDrop className="popUp-backdrop" />, portalElement)}
@@ -22,4 +22,4 @@ const AddedToFavourite = ({ popUpMsg }) => {
     );
 };
 
-export default AddedToFavourite;
+export default PopUp;

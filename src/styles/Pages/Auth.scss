@@ -6,7 +6,6 @@
     background-image: url(../../assets/images/movie1.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    font-family: sans-serif;
 
     >div:nth-child(1) {
         background-color: transparentize($color: #000000, $amount: 0.15);

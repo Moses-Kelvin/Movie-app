@@ -1,13 +1,17 @@
 import { Delete, Edit, Reply } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
-import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { auth, db } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import '../../../styles/SingleReview/CommentHeader.scss';
 import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
+import DeleteModal from "../../UI/Modal/DeleteModal";
+import timeAgo from "../../../utils/TimeAgo";
+import { useEffect } from "react";
+
 
 const CommentHeader = (props) => {
 
@@ -15,7 +19,9 @@ const CommentHeader = (props) => {
         sentAt, name, userId, id, setEditComment, setEditReply, setReplyId,
         setUserInput, setEditSingleComment } = props
 
-        const profilePic = useFetchProfilePic(userId);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const profilePic = useFetchProfilePic(userId);
 
     const { commentId, movieId, tvShowId } = useParams();
 
@@ -23,37 +29,27 @@ const CommentHeader = (props) => {
 
     const onTvShowsPath = pathname.includes("TvShows");
 
-    const navigate = useNavigate();
-
     const [user] = useAuthState(auth);
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
     console.log(profilePic)
 
+    // Persist commnt posted time 
+    const time = timeAgo(sentAt);
 
-    const deleteReview = async (id, replyId) => {
-        try {
-            if (type === "comment") {
-                const docRef = doc(db,
-                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${id}`);
-                await deleteDoc(docRef);
-            } else if (type === "reply") {
-                const docRef = doc(db,
-                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies/${replyId}`);
-                await deleteDoc(docRef);
-            } else if (type === "singleComment") {
-                const commentRoute = `/${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`;
-                console.log(commentRoute);
-                const docRef = doc(db,
-                    `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
-                navigate(commentRoute);
-                await deleteDoc(docRef);
-            }
-        } catch (e) {
-            console.log(e)
+    // Update comment posted time
+    useEffect(() => {
+        const myTimer = setTimeout(() => {
+            timeAgo();
+        }, 1000);
+
+        return () => {
+            clearTimeout(myTimer);
         }
-    };
+    }, []);
+
+
 
     const editReview = async (id, replyId) => {
         if (type === "comment") {
@@ -81,27 +77,34 @@ const CommentHeader = (props) => {
 
 
     return (
-        <div className="commentHeader">
-            <div>
-                {profilePic ? <img src={profilePic} alt="" />
-                    : <Avatar sx={{ width: avatarWidth, height: avatarHeight }} />}
-                <h4>{name}</h4>
-                <h5>7hr ago</h5>
+        <>
+            {showDeleteModal && <DeleteModal
+                type={type}
+                id={id}
+                replyId={replyId}
+                setShowDeleteModal={setShowDeleteModal} />}
+            <div className="commentHeader">
+                <div>
+                    {profilePic ? <img src={profilePic} alt="" />
+                        : <Avatar sx={{ width: avatarWidth, height: avatarHeight }} />}
+                    <h4>{name}</h4>
+                    <h5>{time}</h5>
+                </div>
+                <div>
+                    <Link to={`${id}`}>
+                        {type === "comment" && <Reply sx={{ color: 'blue', fontSize: iconSize }} />}
+                    </Link>
+                    {currentUser?.data.name === name ?
+                        <Edit onClick={() => editReview(id, replyId)}
+                            sx={{ color: 'blue', fontSize: iconSize }} /> :
+                        undefined}
+                    {currentUser?.data.name === name ?
+                        <Delete onClick={() => setShowDeleteModal(true)}
+                            sx={{ color: 'red', fontSize: iconSize }} /> :
+                        undefined}
+                </div>
             </div>
-            <div>
-                <Link to={`${id}`}>
-                    {type === "comment" && <Reply sx={{ color: 'blue', fontSize: iconSize }} />}
-                </Link>
-                {currentUser?.data.name === name ?
-                    <Edit onClick={() => editReview(id, replyId)}
-                        sx={{ color: 'blue', fontSize: iconSize }} /> :
-                    undefined}
-                {currentUser?.data.name === name ?
-                    <Delete onClick={() => deleteReview(id, replyId)}
-                        sx={{ color: 'red', fontSize: iconSize }} /> :
-                    undefined}
-            </div>
-        </div>
+        </>
     )
 };
 

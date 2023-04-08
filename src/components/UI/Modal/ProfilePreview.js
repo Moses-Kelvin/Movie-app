@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import Button from './Button';
-import '../../styles/UI/ProfilePreview.scss';
-import { BackDrop } from './Search/SearchModal';
+import Button from '../Button';
+import '../../../styles/UI/Modal/ProfilePreview.scss';
+import { BackDrop } from './SearchModal';
 
 const ProfilePreviewOverlay = ({ file, handleSubmit, onClose}) => {
     return (

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import '../../../styles/Navbar/Navbar.scss';
 import { Search, AccountCircle, Menu } from "@mui/icons-material";
 import Button from '../../UI/Button';
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import SearchModal from "../../UI/Search/SearchModal";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import SearchModal from "../../UI/Modal/SearchModal";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../../firebase";
@@ -26,6 +26,14 @@ const Navbar = () => {
 
     const profilePic = useFetchProfilePic(currentUser?.docId);
 
+    const location = useLocation();
+
+    useEffect(() => {
+        setOpenSidebar(false);
+        setSearchIsVisible(false);
+    }, [location])
+
+
     const logUserOut = () => {
         logout();
         navigate("/home")
@@ -45,7 +53,7 @@ const Navbar = () => {
                     onClick={() => setOpenSidebar(true)}
                     sx={{ fontSize: '2.3rem', marginLeft: '1rem' }} />}
                 <Link to='/home'>
-                    <h1>Movies</h1>
+                    <h1>KM</h1>
                 </Link>
                 {onDesktop && <ul>
                     <li>

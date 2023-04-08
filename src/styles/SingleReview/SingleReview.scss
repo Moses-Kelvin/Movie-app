@@ -1,12 +1,13 @@
 @import '../../Variables/Variable.scss';
 
-.MovieSingleReview-section {
-    display: grid;
+.SingleReview-section {
+    display: flex;
+    flex-direction: column;
     margin: 4rem 1rem 0 0;
     background-color: $darkGreyColor;
     border-radius: 0.7rem;
-    font-family: sans-serif;
     color: $whiteColor;
+
     >h2 {
         margin-left: 2rem;
     }
@@ -20,13 +21,45 @@
     display: flex;
     flex-direction: column;
     justify-self: center;
+
     h3 {
         margin-top: 0;
     }
 }
 
-@media (max-width: 500px) { 
-    .MovieSingleReview-section {
+.LoginInToAddReview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >div:nth-child(2) {
+        display: flex;
+        column-gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    a {
+        color: blue;
+        text-decoration: none;
+    }
+}
+
+.review-container {
+    display: grid;
+    height: 100%;
+    width: inherit;
+}
+
+@media (max-width: 500px) {
+    .SingleReview-section {
         margin-left: 1rem;
+    }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) { 
+    .SingleReview-section {
+        margin-right: 0;
+        width: 80%;
+        justify-self: center;
     }
 }

@@ -1,5 +1,5 @@
 import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore";
-import { showPopUpMsg } from "../features/addFavouriteSlice";
+import { showPopUpMsg, addBumpToFav } from "../features/addFavouriteSlice";
 import { db } from "../../firebase";
 
 export const Addfavourite = (data, userId) => {
@@ -32,4 +32,20 @@ export const Addfavourite = (data, userId) => {
         console.log(e)
     }
 }
+}
+
+
+export const AddBump = (data, userId) => {
+    return async (dispatch) => {
+       try {
+        const colRef = collection(db, `users/${userId}/Favourites`);
+        const docs = await getDocs(colRef);
+        const movie = docs?.docs.find(doc => data.title === doc.data().title);
+        if (!movie) {
+            dispatch(addBumpToFav(true));
+        } 
+       } catch(e) {
+        console.log(e)
+       }
+    }
 }

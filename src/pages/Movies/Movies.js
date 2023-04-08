@@ -11,9 +11,10 @@ const Movies = () => {
     const lgScreen = useMediaQuery(theme.breakpoints.up('sm'));
     const mdScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+
     const largeScreenLayout = (
         <>
-            <MoviesGrid ent="movies" />
+            <MoviesGrid  />
             <MovieSearch />
         </>
     );
@@ -21,7 +22,7 @@ const Movies = () => {
     const MediumAndSmallScreenLayout = (
         <>
             <MovieSearch />
-            <MoviesGrid ent="movies" />
+            <MoviesGrid />
         </>
     );
 

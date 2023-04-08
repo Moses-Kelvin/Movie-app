@@ -2,20 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Favorite, Star } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Button from "../UI/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { auth, db } from "../../firebase";
-import { Addfavourite } from "../../store/actions/addFavourite";
+import { AddBump, Addfavourite } from "../../store/actions/addFavourite";
 import { collection, onSnapshot, orderBy } from "firebase/firestore";
 
 const TvShowGridCard = ({ data }) => {
 
-    const [favColor, setFavColor] = useState("");
+    const [favColor, setFavColor] = useState("white");
 
     const [user] = useAuthState(auth);
 
     const dispatch = useDispatch();
+    const isAddedToFav = useSelector((state) => state.Favourite.isFav);
+
 
     const { data: currentUser } = useFetchUserDataQuery(user?.uid);
 
@@ -25,9 +27,7 @@ const TvShowGridCard = ({ data }) => {
                 const movie = snapshot.docs.find(doc => data.name === doc.data().title);
                 if (movie) {
                     setFavColor("red");
-                } else {
-                    setFavColor("white")
-                }
+                }  
             }
         )
     }, [currentUser?.docId, data]);
@@ -42,10 +42,16 @@ const TvShowGridCard = ({ data }) => {
         type: "TvShows"
     }
 
+    const addFav = async () => {
+        dispatch(Addfavourite(tvShowData, currentUser.docId));
+        dispatch(AddBump(tvShowData, currentUser.docId));
+       
+    };
+
     return (
         <div className="movie MoviesGrid-movie">
             <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt="" />
-            <Link to="/Movies/Adam">
+            <Link to={`/TvShows/${data.id}`}>
                 <Button className="readMore-btn">Read More</Button>
             </Link>
             <div>
@@ -53,10 +59,8 @@ const TvShowGridCard = ({ data }) => {
                 <div className="movie-info">
                     <h4>{new Date(data.first_air_date).getFullYear()}</h4>
                     <div>
-                        {user && <Favorite
-                            onClick={() =>
-                                dispatch(Addfavourite(tvShowData, currentUser?.docId))
-                            }
+                        {user && <Favorite className={isAddedToFav ? "bump" : undefined}
+                            onClick={addFav}
                             sx={{ fontSize: '22px', color: favColor }} />}
                         <span>
                             <Star sx={{ color: 'yellow', fontSize: '22px' }} />

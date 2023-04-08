@@ -1,14 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import Navbar from "./Navbar/Navbar";
 import { showPopUpMsg } from "../../store/features/addFavouriteSlice";
-import AddedToFavourite from '../UI/AddedToFavourite';
+import PopUp from '../UI/Modal/PopUp';
 import { useDispatch, useSelector } from "react-redux";
 
 const Layout = ({ children, }) => {
 
-    const popUpMsg = useSelector((state) => state.FavouritePopUp.message);
+    const popUpMsg = useSelector((state) => state.Favourite.message);
     const dispatch = useDispatch();
 
     const { pathname } = useLocation();
@@ -20,12 +20,11 @@ const Layout = ({ children, }) => {
         }, 1000);
 
         return () => clearTimeout(timer);
-    }, [popUpMsg]);
-    // console.log(userOnAuthPage);
+    }, [popUpMsg, dispatch]);
 
     return (
         <Fragment>
-            {popUpMsg && <AddedToFavourite popUpMsg={popUpMsg} />}
+            {popUpMsg && <PopUp popUpMsg={popUpMsg} />}
             {!userOnAuthPage && <Navbar />}
             <main style={{ height: userOnAuthPage && '100%' }}>{children}</main>
             {!userOnAuthPage && <Footer />}

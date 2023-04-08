@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from "../../firebase";
 import { signInWithEmailAndPassword} from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import AuthSpinner from "../../components/UI/Spinners/AuthSpinner";
+import Spinner from "../../components/UI/Spinners/Spinner";
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ const LogIn = () => {
 
     return (
         <>
-            {isLoading && <AuthSpinner />}
+            {isLoading && <Spinner />}
             <div className="auth">
                 <div>
                     <h2>LOGIN</h2>

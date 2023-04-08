@@ -30,7 +30,7 @@ const FavouriteMoviecard = ({ movie }) => {
     }
     return (
         <div className="featuredMovie"
-            style={{ backgroundImage: `url(https://image.tmdb.org/t/p/${desktop ? "w1280" : "w500"}${movie.backdrop_path})` }}>
+            style={{ backgroundImage: `url(https://image.tmdb.org/t/p/${desktop ? "w1280" : "w780"}${movie.backdrop_path})` }}>
             <div className="featuredMovie-info">
                 <div className="featuredMovie-genre_container">
                     {moviesGenre.filter(genre => movie.genre_ids.includes(genre.id)).map((Genre, indx) =>

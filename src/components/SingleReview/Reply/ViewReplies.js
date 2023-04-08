@@ -39,6 +39,7 @@ const ViewReplies = ({ setEditReply, setReplyId, setEditSingleComment, setUserIn
                         setEditSingleComment={setEditSingleComment}
                         setUserInput={setUserInput}
                         name={currentComment.name}
+                        sentAt={new Date(currentComment.sentAt?.toDate())}
                          userId={currentComment.userId} />
                     <p>{currentComment.comment}</p>
                 </div>

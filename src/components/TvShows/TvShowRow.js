@@ -7,9 +7,9 @@ const TvShowRow = ({ movieHeader, MoviesDiscoverData }) => {
         return (<div className="MovieRow">
                 <h1>{movieHeader}</h1>
                 <div className="MovieRow-Container horizontalScroll">
-                        {MoviesDiscoverData.map((data, index) =>
+                        {MoviesDiscoverData?.map((data) =>
                                 <TvShowCard
-                                        key={index}
+                                        key={data.id}
                                         data={data}
                                 />
                         )}

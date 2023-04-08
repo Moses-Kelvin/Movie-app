@@ -11,7 +11,10 @@ import {
 import { useGetTopStoriesNewsQuery } from '../store/features/newsApiSlice';
 import NewsType from '../components/News/NewsType';
 import TvShowRow from '../components/TvShows/TvShowRow';
- 
+import CardSkeleton from '../components/UI/Spinners/CardSpinner';
+
+const array = new Array(20);
+
 
 const Home = () => {
 
@@ -21,53 +24,42 @@ const Home = () => {
     const { data: popularTvShows, isFetching: isPopularTvShowsfetching } = useGetPopularTvShowsQuery();
     const { data: TopStoriesNews, isFetching: isTopStoriesNewsfetching } = useGetTopStoriesNewsQuery();
 
-    // if (!isTopStoriesNewsfetching) {
-    //     localStorage.setItem('TopStoriesNews', JSON.stringify(TopStoriesNews));
-    // }
-    // if (!isTopRatedTvShowsfetching) {
-    //     localStorage.setItem('TopRatedTvShows', JSON.stringify(TopRatedTvShows));
-    // }
 
+    const spinner = (
+        <div className="horizontalScroll">
+          {array.map((el, index) => <CardSkeleton />)}
+        </div>
+    );
 
+return (
+    <>
+        <FeaturedMovie />
+        <MovieGenreFilter />
+        {isMoviesDiscoverfetching ? spinner :
+            <MovieRow movieHeader="DISCOVER"
+                MoviesDiscoverData={MoviesDiscover?.results}
 
+            />}
+        {isUpcomingMoviesfetching ?  spinner :
+            <MovieRow movieHeader="UPCOMING MOVIES"
+                MoviesDiscoverData={upcomingMovies?.results}
 
-    const moviesDiscoverResult = JSON.parse(localStorage.getItem('moviesDiscover'));
-    const upcomingMoviesResult = JSON.parse(localStorage.getItem('upcomingMovies'));
-    const TopRatedTvShowsResult = JSON.parse(localStorage.getItem('TopRatedTvShows'));
-    const popularTvShowsResult = JSON.parse(localStorage.getItem('popularTvShows'));
-    const TopStoriesNewsResult = JSON.parse(localStorage.getItem('TopStoriesNews'));
+            />}
+        {isTopRatedTvShowsfetching ? spinner :
+            <TvShowRow movieHeader="TOP RATED TV SHOWS"
+                MoviesDiscoverData={TopRatedTvShows?.results}
 
-    
-    return (
-        <>
-            <FeaturedMovie />
-            <MovieGenreFilter />
-            {isMoviesDiscoverfetching ? <p style={{ color: 'white' }}>Loading..</p> :
-                <MovieRow movieHeader="DISCOVER"
-                    MoviesDiscoverData={moviesDiscoverResult.results}
-
-                />}
-            {isUpcomingMoviesfetching ? <p style={{ color: 'white' }}>Loading..</p> :
-                <MovieRow movieHeader="UPCOMING MOVIES"
-                    MoviesDiscoverData={upcomingMoviesResult.results}
-
-                />}
-            {isTopRatedTvShowsfetching ? <p style={{ color: 'white' }}>Loading..</p> :
-                <TvShowRow movieHeader="TOP RATED TV SHOWS"
-                    MoviesDiscoverData={TopRatedTvShowsResult.results}
-
-                />}
-            {isPopularTvShowsfetching ? <p style={{ color: 'white' }}>Loading..</p> :
-                <TvShowRow movieHeader="POPULAR TV SHOWS"
-                    MoviesDiscoverData={popularTvShowsResult.results}
-                />}
-            {isTopStoriesNewsfetching ? <p style={{ color: 'white' }}>Loading..</p> :
-                <NewsType NewsHeader="TOP STORIES NEWS"
-                    TopStoriesNewsData={TopStoriesNewsResult.articles}
-
-                />}
-        </>
-    )
+            />}
+        {isPopularTvShowsfetching ? spinner :
+            <TvShowRow movieHeader="POPULAR TV SHOWS"
+                MoviesDiscoverData={popularTvShows?.results}
+            />}
+        {isTopStoriesNewsfetching ? spinner :
+            <NewsType NewsHeader="TOP STORIES NEWS"
+                TopStoriesNewsData={TopStoriesNews?.articles}
+            />}
+    </>
+)
 };
 
 export default Home;

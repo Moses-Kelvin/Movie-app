@@ -9,13 +9,11 @@
     justify-self: center;
     margin-top: 1rem;
     border-radius: 0.6rem;
-    font-family: sans-serif;
     padding-bottom: 1rem;
 
-    >div:nth-child(2)>p {
-        margin-top: 0.2rem;
+    p {
         max-width: 90%;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         line-height: 1.4;
         color: $textColor;
         text-align: justify;
@@ -42,7 +40,7 @@
         font-size: 0.65rem;
     }
 }
-
+ 
 .comment-section {
     display: grid;
 }
@@ -80,6 +78,12 @@
 }
 
 @media (max-width: 500px) {  
+    .comment {
+        width: 95%;
+        >p {
+            font-size: 1.5rem;
+        }
+    }
     .reply {
         width: 80%;
     }

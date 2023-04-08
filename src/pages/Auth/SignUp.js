@@ -9,7 +9,7 @@ import { auth, db, signInWithGoogle } from "../../firebase";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import AuthSpinner from "../../components/UI/Spinners/AuthSpinner";
+import Spinner from "../../components/UI/Spinners/Spinner";
 
 const SignUp = () => {
 
@@ -96,7 +96,7 @@ const SignUp = () => {
 
     return (
         <>
-           {isLoading && <AuthSpinner />}
+           {isLoading && <Spinner />}
             <div className="auth">
                 <div>
                     <h2>SIGN UP</h2>

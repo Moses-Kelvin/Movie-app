@@ -1,0 +1,45 @@
+@import '../../../Variables/Variable.scss';
+
+.deleteModal {
+    width: 20rem;
+    background-color: $darkGreyColor;
+    height: 12rem;
+    position: fixed;
+    z-index: 100;
+    margin-top: 5rem;
+    color: $whiteColor;
+    font-family: sans-serif;
+    border-radius: 1rem;
+
+    p {
+        padding: 0 1rem;
+        font-size: 0.9rem;
+    }
+
+    h3 {
+        padding-left: 1rem;
+    }
+}
+
+.delete-btn {
+    background-color: $redColor;
+    color: $whiteColor;
+}
+
+.delete-btn:hover,
+.cancel-btn:hover {
+    opacity: 0.6;
+}
+
+.deleteModal-btn {
+    display: flex;
+    column-gap: 1rem;
+    justify-content: flex-end;
+    padding: 1rem 2rem 0 0;
+}
+
+@media (max-width: 500px) { 
+    .deleteModal {
+        margin-top: 13rem;
+    }
+}

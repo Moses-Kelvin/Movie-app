@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
- const FavouritePopUpSlice = createSlice({
-    name: 'FavouritePopUp', 
+ const FavouriteSlice = createSlice({
+    name: 'Favourite', 
     initialState: {
-        message: ""
+        message: "",
+        isFav: false
     },
     reducers: {
          showPopUpMsg:  (state, action) => {
           state.message = action.payload
+         },
+         addBumpToFav: (state, action) => {
+            state.isFav = action.payload
          }
     }
 });
 
-export const { showPopUpMsg } = FavouritePopUpSlice.actions;
+export const { showPopUpMsg, addBumpToFav } = FavouriteSlice.actions;
 
-export default FavouritePopUpSlice;
+export default FavouriteSlice;

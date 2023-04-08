@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../../styles/Movies/MovieRow.scss';
 import '../../styles/Movies/MoviesGrid.scss';
 import { Pagination, Typography } from "@mui/material";
@@ -9,30 +9,31 @@ import TvShowGridCard from "./TvShowGridCard";
 const TvShowGrid = ({ ent }) => {
 
     const [page, setPage] = useState(1);
-
-    const upcomingMoviesResult = JSON.parse(localStorage.getItem('popularTvShows'));
-
-    const upcomingMoviesResults = upcomingMoviesResult.results;
+    const  scrollToTvShows = useRef();
 
     const handlePageChange = (event, value) => {
         setPage(value);
     }
 
-    // const { data } = useGetMoviesDiscoverQuery(page);
+    const { data: tvShowData, refetch } = useGetPopularTvShowsQuery(page);
 
-    const { data } = useGetPopularTvShowsQuery(page);
+
+    useEffect(() => {
+        refetch();
+        scrollToTvShows.current.scrollIntoView({ behavior: "smooth" });
+    }, [refetch, page]);
 
 
 
     return (
-        <section className="MoviesGrid-section">
+        <section className="MoviesGrid-section" ref={scrollToTvShows}>
             <div className="MoviesGrid-header">
-                <p>Found 70 {ent} in total</p>
+                <p>Found {tvShowData?.results.length} TvShows in total</p>
             </div>
             <div className="MoviesGrid-container">
-                {upcomingMoviesResults.map((data, index) =>
+                {tvShowData?.results.map((data) =>
                     <TvShowGridCard
-                        key={index}
+                        key={data.id}
                         data={data}
                     />
                 )}

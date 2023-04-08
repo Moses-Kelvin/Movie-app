@@ -4,24 +4,21 @@ import InputField from "../UI/InputField";
 import '../../styles/SingleReview/TextArea.scss';
 import Button from "../UI/Button";
 import { useLocation, useParams } from "react-router-dom";
-import { addDoc, collection, doc,  serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useFetchProfilePic from "../../hooks/use-fetchProfilePic";
 
 
 const TextArea = (props) => {
 
     const { placeHolder, action, setEditComment, id, setUserInput, setEditSingleComment,
-        userInput, replyId, setEditReply } = props;
+        userInput, replyId, setEditReply,  profilePic } = props;
 
 
     const [user] = useAuthState(auth);
 
-    const { data: userData, currentUser } = useFetchUserDataQuery(user?.uid);
-
-    const profilePic = useFetchProfilePic(currentUser?.docId);
+    const { data: userData } = useFetchUserDataQuery(user?.uid);
 
     const { movieId, commentId, tvShowId } = useParams();
 
@@ -56,12 +53,15 @@ const TextArea = (props) => {
                 comment: userInput
             })
         } else if (action === "Reply") {
+            const docRef = doc(db, `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}`);
+            const docSnap = await getDoc(docRef);
             await addDoc(collection(db,
                 onTvShowsPath ? "TvShows" : "Movies", onTvShowsPath ? tvShowId : movieId, "Comments", commentId, "Replies"), {
                 name: userData?.data.name,
                 userId: userData?.docId,
                 vote: 0,
                 reply: userInput,
+                replyingTo: docSnap.data().name,
                 sentAt: serverTimestamp()
             });
             setUserInput("");
@@ -81,7 +81,7 @@ const TextArea = (props) => {
         <div className="textArea">
             <div>
                 {profilePic ?
-                    <img src={profilePic} alt="" />
+                   <img src={profilePic} alt=""/>
                     : <Avatar sx={{ color: 'white' }} />}
                 <InputField
                     id="standard-basic"

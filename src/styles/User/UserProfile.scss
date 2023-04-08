@@ -3,7 +3,6 @@
 .userProfile-section {
     background-color: $darkGreyColor;
     color: $whiteColor;
-    font-family: sans-serif;
     width: 17rem;
     height: fit-content;
     margin-top: 3rem;
@@ -84,7 +83,13 @@
     }
 
     .addAPhoto {
-        left: 13rem;
+        left: 14rem;
+        top: 10rem;
+    }
+
+    .userImg {
+        width: 10rem;
+        height: 10rem;
     }
 }
 
@@ -95,6 +100,12 @@
     }
     .addAPhoto {
         left: 26rem;
+        top: 10rem;
+    }
+
+    .userImg {
+        width: 10rem;
+        height: 10rem;
     }
 }
 

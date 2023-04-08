@@ -24,13 +24,13 @@ const FeaturedMovie = () => {
         resetTimeout();
         timeoutRef.current = setTimeout(() =>
             setIndex((prevIndex) =>
-                prevIndex === trendingMoviesResult.results.length - 1 ? 0 : prevIndex + 1
+                prevIndex === trendingMovies?.results.length - 1 ? 0 : prevIndex + 1
             ), 10000
         );
         return () => {
             resetTimeout();
         };
-    }, [index, trendingMoviesResult.results.length]);
+    }, [index, trendingMovies?.results.length]);
 
 
 
@@ -39,7 +39,7 @@ const FeaturedMovie = () => {
             <div className="featuredMovie-slideshow">
                 <div className="featuredMovie-slideshowSlider"
                     style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
-                    {trendingMoviesResult.results.map((movie, index) => (
+                    {trendingMovies?.results.map((movie, index) => (
                         <FavouriteMoviecard
                             key={index}
                             movie={movie}
@@ -47,7 +47,7 @@ const FeaturedMovie = () => {
                     ))}
                 </div>
                 <div className="slideShowDots">
-                    {trendingMoviesResult.results.map((_, idx) =>
+                    {trendingMovies?.results.map((_, idx) =>
                         <div key={idx} className={`slideShowDot ${index === idx ? "activeDot" : ""}`}
                             onClick={() => { setIndex(idx) }}></div>
                     )}
