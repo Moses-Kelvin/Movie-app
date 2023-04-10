@@ -85,7 +85,7 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
     )
 
     return (
-        <div className="searchModal scroller">
+        <div className="searchModal">
             <div>
                 <KeyboardBackspace onClick={() => setSearchIsVisible(false)} />
                 <InputField className='searchInput'
@@ -95,12 +95,11 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
                     variant="standard"
                     value={searchTerm} 
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    iconStart={<Search sx={{ color: 'white' }} />}
+                    iconStart={<Search sx={{ color: 'white', width: '100%' }} />}
                     textColor='white' Width='100%' />
             </div>
             {searchOption}
-            <div className="searchModal-container">
-                <div className="searchItems">
+                <div className="searchItems scroller">
                     {
                         !isLoading && !error && result.length > 0 && result.map((data, id) => (
                             <SearchItem
@@ -110,7 +109,7 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
                                 overview={data.overview}
                                 img={data.poster_path}
                                 setSearchIsVisible={setSearchIsVisible}
-                                filteredTerm={filteredTerm}
+                                filteredTerm={filteredTerm === "movie" ? "Movies" : "TvShows"}
                             />
                         ))
                     }
@@ -118,7 +117,6 @@ const SearchModalOverlay = ({ setSearchIsVisible }) => {
                     {error && !isLoading && <h3 className="error">{error}</h3>}
                 </div>
             </div>
-        </div>
     )
 };
 

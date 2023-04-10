@@ -1,4 +1,4 @@
-import { collection, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { db } from "../../../firebase";
@@ -17,9 +17,10 @@ const Replies = ({setEditReply, setReplyId, setUserInput}) => {
     const onTvShowsPath = pathname.includes("TvShows");
 
     useEffect(() => {
-        onSnapshot(collection(db,
-             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies`), orderBy(
-            'timestamp', 'asc'), (snapshot) => {
+        const q = query(collection(db,
+            `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments/${commentId}/Replies`), 
+            orderBy('sentAt', 'desc'));
+        onSnapshot(q, (snapshot) => {
                 setReplies(snapshot.docs.map(doc => ({
                     id: doc.id,
                     data: doc.data()

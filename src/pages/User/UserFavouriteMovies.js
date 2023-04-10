@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import '../../styles/Pages/UserFavouriteMovies.scss';
 import '../../styles/Pages/Movies.scss';
 import { auth, db } from "../../firebase";
-import { collection, deleteDoc, doc, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import { Star, RemoveCircleOutline } from "@mui/icons-material";
@@ -26,8 +26,8 @@ const UserFavouriteMovies = () => {
     }, []);
 
     useEffect(() => {
-        onSnapshot(collection(db, `users/${currentUser?.docId}/Favourites`), orderBy(
-            'timestamp', 'asc'), (snapshot) => {
+        const q = query(collection(db, `users/${currentUser?.docId}/Favourites`), orderBy('sentAt', 'desc'));
+        onSnapshot(q, (snapshot) => {
                 setFavouriteMovies(snapshot.docs.map(doc => ({
                     id: doc.id,
                     data: doc.data()

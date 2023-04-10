@@ -4,18 +4,19 @@ import '../../styles/Movies/MoviesGrid.scss';
 import { Pagination, Typography } from "@mui/material";
 import { useGetPopularTvShowsQuery } from "../../store/features/moviesApiSlice";
 import TvShowGridCard from "./TvShowGridCard";
+import Spinner from "../UI/Spinners/Spinner";
 
 
 const TvShowGrid = ({ ent }) => {
 
     const [page, setPage] = useState(1);
-    const  scrollToTvShows = useRef();
+    const scrollToTvShows = useRef();
 
     const handlePageChange = (event, value) => {
         setPage(value);
     }
 
-    const { data: tvShowData, refetch } = useGetPopularTvShowsQuery(page);
+    const { data: tvShowData, refetch, isLoading } = useGetPopularTvShowsQuery(page);
 
 
     useEffect(() => {
@@ -26,25 +27,28 @@ const TvShowGrid = ({ ent }) => {
 
 
     return (
-        <section className="MoviesGrid-section" ref={scrollToTvShows}>
-            <div className="MoviesGrid-header">
-                <p>Found {tvShowData?.results.length} TvShows in total</p>
-            </div>
-            <div className="MoviesGrid-container">
-                {tvShowData?.results.map((data) =>
-                    <TvShowGridCard
-                        key={data.id}
-                        data={data}
-                    />
-                )}
-            </div>
-            <div className="MoviesGrid-footer">
-                <Typography fontSize={20} align="center">
-                    page: {page}
-                </Typography>
-                <Pagination color="primary" count={10} page={page} onChange={handlePageChange} />
-            </div>
-        </section>
+        <>
+            {isLoading && <Spinner />}
+            <section className="MoviesGrid-section" ref={scrollToTvShows}>
+                <div className="MoviesGrid-header">
+                    <p>Found {tvShowData?.results.length} TvShows in total</p>
+                </div>
+                <div className="MoviesGrid-container">
+                    {tvShowData?.results.map((data) =>
+                        <TvShowGridCard
+                            key={data.id}
+                            data={data}
+                        />
+                    )}
+                </div>
+                <div className="MoviesGrid-footer">
+                    <Typography fontSize={20} align="center">
+                        page: {page}
+                    </Typography>
+                    <Pagination color="primary" count={10} page={page} onChange={handlePageChange} />
+                </div>
+            </section>
+        </>
     )
 };
 

@@ -5,25 +5,25 @@ import { AddAPhoto, Settings } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { auth, db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { addDoc, collection, onSnapshot, orderBy } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, serverTimestamp } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../store/features/userDataSlice";
 import ProfilePreview from "../UI/Modal/ProfilePreview";
-import Spinner from "../UI/Spinners/Spinner";
+import useFetchProfilePic from "../../hooks/use-fetchProfilePic";
 
 
 const UserProfile = () => {
 
     const [file, setFile] = useState("");
-    const [profilePics, setProfilePics] = useState([]);
 
     const [user] = useAuthState(auth);
 
     const { data: currentUser, refetch } = useFetchUserDataQuery(user?.uid);
-    console.log(currentUser?.docId)
 
     const [photoUrl, setPhotoUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
+
+    const profilePic = useFetchProfilePic(currentUser?.docId);
 
     useEffect(() => {
         if (photoUrl) {
@@ -38,21 +38,12 @@ const UserProfile = () => {
             await addDoc(colRef, {
                 imgurl: photoUrl,
                 userId: currentUser?.docId,
+                timestamp: serverTimestamp()
             });
         };
         if (photoUrl) addProfilePic();
     }, [photoUrl, currentUser?.docId]);
 
-    useEffect(() => {
-        onSnapshot(collection(db, `users/${currentUser?.docId}/ProfilePics`),
-            orderBy('timestamp', 'asc'), (snapshot) => {
-                setProfilePics(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            }
-        )
-    }, [currentUser?.docId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -97,9 +88,9 @@ const UserProfile = () => {
                 onClose={() => setFile(null)} />}
             <section className="userProfile-section">
                 <div className="userProfile-avatar">
-                    {profilePics.length !== 0 ?
-                        <img className="userImg" src={profilePics[0]?.data.imgurl} alt="" /> :
-                        <Avatar sx={{ width: '8rem', height: '8rem' }} />}
+                    {profilePic ?
+                        <img className="userImg" src={profilePic} alt="" /> :
+                        <Avatar sx={{ width: '10rem', height: '10rem' }} />}
                     <label htmlFor="fileInput">
                         <div className="addAPhoto">
                             <AddAPhoto sx={{ fontSize: '1.8rem' }} />
