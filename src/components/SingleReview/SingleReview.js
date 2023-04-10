@@ -4,7 +4,7 @@ import '../../styles/SingleReview/SingleReview.scss';
 import Comment from "./Comment/Comment";
 import { Link, Navigate, useLocation, useParams, useRoutes } from "react-router-dom";
 import ViewReplies from "./Reply/ViewReplies";
-import { collection, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Forum } from "@mui/icons-material";
@@ -35,17 +35,18 @@ const SingleReview = () => {
 
     const profilePic = useFetchProfilePic(currentUser?.docId);
 
+    const onTvShowsPath = pathname.includes("TvShows");
+
     
     useEffect(() => {
         scrollToComments.current.scrollIntoView({ behavior: "smooth" });
     }, []);
 
     useEffect(() => {
-        const onTvShowsPath = pathname.includes("TvShows");
-        onSnapshot(collection(db,
+        const q = query(collection(db,
             `${onTvShowsPath ? "TvShows" : "Movies"}/${onTvShowsPath ? tvShowId : movieId}/Comments`),
-            orderBy(
-                'timestamp', 'asc'), (snapshot) => {
+            orderBy('sentAt', 'desc'));
+        onSnapshot(q, (snapshot) => {
                     setMovieComments(snapshot.docs.map(doc => ({
                         id: doc.id,
                         data: doc.data()

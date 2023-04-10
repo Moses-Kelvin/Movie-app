@@ -8,14 +8,14 @@ const SearchItem = ({ title, img, overview, id, setSearchIsVisible, filteredTerm
 
     const handleClick = (id) => {
         setSearchIsVisible(false);
-        navigate(`/${filteredTerm === "movies" ? "Movies" : "TvShows"}/${id}`);
+        navigate(`/${filteredTerm}/${id}`);
     };
 
     return (
         <div className="searchItem" onClick={() => handleClick(id)}>
             <img src={`https://image.tmdb.org/t/p/w500${img}`} alt="" />
             <div>
-                <h3>{`${title.slice(0, 50)}...`}</h3>
+                <h3>{title >=50 ? `${title.slice(0, 50)}...` : `${title.slice(0, 50)}`}</h3>
                {overview && <p>{`${overview.slice(0, 40)}...`}</p>}
             </div>
         </div>

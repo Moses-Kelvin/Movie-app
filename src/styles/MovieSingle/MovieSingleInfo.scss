@@ -11,6 +11,8 @@
     img {
         width: 80%;
         border-radius: 0.2rem;
+        height: 20rem;
+        padding-bottom: 0.5rem;
     }
 
     p {
@@ -45,13 +47,15 @@
 @media (max-width: 500px) {
     .MovieSingleInfo_section {
         align-self: center;
+
         h1 {
             font-size: 1.5rem;
         }
 
-        img {
-            width: 80%;
+        img,
+        p,
+        h1 {
+            width: 85%;
         }
     }
 }
- 

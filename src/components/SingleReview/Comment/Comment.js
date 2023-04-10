@@ -82,7 +82,7 @@ const Comment = (props) => {
                 </div>
             </div>
             {replyList.length > 2 && <Link to={`${id}`} className="view-replies">
-                <p>view replies previous {replyList.length} replies</p>
+                <p>view previous {replyList.length} replies</p>
             </Link>}
             <div className="ReplyList">
                 {replyList.length < 3 && replyList.map(reply =>
