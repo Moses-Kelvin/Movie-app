@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../../../styles/Navbar/Navbar.scss';
+import '../../../styles/layout/Navbar/Navbar.scss';
 import { Search, AccountCircle, Menu } from "@mui/icons-material";
 import Button from '../../UI/Button';
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";

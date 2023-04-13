@@ -5,6 +5,8 @@ import Navbar from "./Navbar/Navbar";
 import { showPopUpMsg } from "../../store/features/addFavouriteSlice";
 import PopUp from '../UI/Modal/PopUp';
 import { useDispatch, useSelector } from "react-redux";
+import { Navigation } from "@mui/icons-material";
+import "../../styles/layout/Layout.scss";
 
 const Layout = ({ children, }) => {
 
@@ -22,9 +24,17 @@ const Layout = ({ children, }) => {
         return () => clearTimeout(timer);
     }, [popUpMsg, dispatch]);
 
+    const scrollToTop = () => {
+        window.scrollTo({top: 0, behavior: 'smooth'})
+    };
+
     return (
         <Fragment>
             {popUpMsg && <PopUp popUpMsg={popUpMsg} />}
+            <div className="navigation">
+                <Navigation 
+                onClick={scrollToTop} sx={{color: 'yellow', fontSize: '2rem'}} />
+            </div>
             {!userOnAuthPage && <Navbar />}
             <main style={{ height: userOnAuthPage && '100%' }}>{children}</main>
             {!userOnAuthPage && <Footer />}

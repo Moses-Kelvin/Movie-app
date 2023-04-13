@@ -1,4 +1,4 @@
-@import '../../Variables/Variable.scss';
+@import '../../../Variables/Variable.scss';
 
 .navbar {
     display: grid;
@@ -8,10 +8,6 @@
     background-color: $darkGreyColor;
     width: 100%;
     height: fit-content;
-    position: fixed;
-    overflow: hidden;
-    top: 0;
-    z-index: 10;
 
     a {
         color: $whiteColor;

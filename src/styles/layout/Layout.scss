@@ -1,0 +1,10 @@
+@import "../../Variables/Variable.scss";
+
+.navigation {
+    position: fixed;
+    bottom: 5%;
+    right: 4%;
+    border-radius: 50%;
+    padding: 0.9rem 1rem;
+    background-color: $redColor;
+}

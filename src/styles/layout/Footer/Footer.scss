@@ -1,10 +1,10 @@
-@import '../../Variables/Variable.scss';
+@import '../../../Variables/Variable.scss';
 
 .footer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     padding: 4rem 0;
-    background-image: url(../../assets/images/slider-bg.jpg);
+    background-image: url(../../../assets/images/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 

@@ -24,6 +24,12 @@ export const moviesApiSlice = createApi({
         getSingleMovie: builder.query({
             query: (id) => `movie/${id}?api_key=${TMDB_API_KEY}`,
         }),
+        getMovieVideo: builder.query({
+            query: (id) => `movie/${id}/videos?api_key=${TMDB_API_KEY}`,
+        }),
+        getTvShowVideo: builder.query({
+            query: (id) => `tv/${id}/videos?api_key=${TMDB_API_KEY}`,
+        }),
         getSingleTvShow: builder.query({
             query: (id) => `tv/${id}?api_key=${TMDB_API_KEY}`,
         }),
@@ -37,4 +43,6 @@ export const {
     useGetTopRatedTvShowsQuery,
     useGetSingleMovieQuery,
     useGetSingleTvShowQuery,
+    useGetMovieVideoQuery,
+    useGetTvShowVideoQuery,
     useGetPopularTvShowsQuery } = moviesApiSlice

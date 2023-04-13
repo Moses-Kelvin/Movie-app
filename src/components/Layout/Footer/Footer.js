@@ -1,6 +1,6 @@
 import React from "react";
 import { Twitter, WhatsApp, GitHub, LinkedIn } from "@mui/icons-material";
-import '../../../styles/Footer/Footer.scss';
+import '../../../styles/layout/Footer/Footer.scss';
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";

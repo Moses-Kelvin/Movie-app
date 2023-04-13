@@ -1,15 +1,15 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGetSingleTvShowQuery } from "../../store/features/moviesApiSlice";
+import { useGetSingleTvShowQuery, useGetTvShowVideoQuery } from "../../store/features/moviesApiSlice";
 import Button from "../UI/Button";
 
 const TvShowSingleMoreInfo = () => {
 
     const { tvShowId } = useParams();
 
-    const { data, isFetching} = useGetSingleTvShowQuery(tvShowId);
+    const { data } = useGetSingleTvShowQuery(tvShowId);
 
-    const singleTvShowResult =   JSON.parse(localStorage.getItem('singleTvShow')); 
+    const { data: videos } = useGetTvShowVideoQuery(tvShowId);
 
     return (
         <section className="MovieSingleMoreInfo-section">
@@ -27,16 +27,26 @@ const TvShowSingleMoreInfo = () => {
                         <p className="SingleGenre" key={index}>{genre.name}</p>
                     )}
                 </div>
-                <h3>Production {data?.production_companies.length > 1 ? "companies" : "company"}:</h3>
-                <div className="production-companies">
-                    {data?.production_companies.map((company, index) =>
-                        <div key={index} className="company">
-                            {company.logo_path && <img alt=""
-                                src={`https://image.tmdb.org/t/p/w92${company.logo_path}`} />}
-                            <p>{company.name}</p>
+                <h2>Videos</h2>
+                <div className="videos scroller">
+                    {videos?.results.map((video) =>
+                        <div className="video" key={video?.id}>
+                            <iframe
+                                title={video?.name}
+                                id={video?.id}
+                                allowFullScreen
+                                allow="accelerometer; clipboard-write; gyroscope; picture-in-picture"
+                                src={`https://www.youtube.com/embed/${video.key}`}>
+                            </iframe>
+                            <h2>{video?.name}</h2>
+                            <div className="video-info">
+                                <p>{video?.type}</p>
+                                <p>{new Date(video?.published_at).toDateString()}</p>
+                            </div>
                         </div>
                     )}
                 </div>
+
             </div>
             <Link to="Comments">
                 <Button className="view-comment_btn">View Comments</Button>
