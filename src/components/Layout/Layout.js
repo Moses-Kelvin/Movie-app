@@ -31,10 +31,10 @@ const Layout = ({ children, }) => {
     return (
         <Fragment>
             {popUpMsg && <PopUp popUpMsg={popUpMsg} />}
-            <div className="navigation">
+           {!userOnAuthPage && <div className="navigation">
                 <Navigation 
                 onClick={scrollToTop} sx={{color: 'yellow', fontSize: '2rem'}} />
-            </div>
+            </div>}
             {!userOnAuthPage && <Navbar />}
             <main style={{ height: userOnAuthPage && '100%' }}>{children}</main>
             {!userOnAuthPage && <Footer />}
