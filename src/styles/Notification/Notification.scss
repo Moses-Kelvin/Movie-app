@@ -1,0 +1,42 @@
+@import "../../Variables/Variable.scss";
+
+.notification {
+   color: white;
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+   background-color: rgb(29, 29, 29);
+   margin-bottom: 0.5rem;
+
+   p {
+      color: rgb(179, 177, 177);
+      margin-top: 0;
+   }
+
+   img {
+      border-radius: 50%;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding-left: 1rem;
+   }
+}
+
+
+.notification-text {
+   font-weight: lighter;
+   font-size: 1rem;
+   padding: 0 0.5rem;
+}
+
+.notification-header {
+   display: flex;
+   align-items: center;
+   h3 {
+      cursor: pointer;
+   }
+}
+
+.deleteIcon {
+   justify-content: end;
+}
+ 

@@ -33,7 +33,7 @@ const Layout = ({ children, }) => {
             {popUpMsg && <PopUp popUpMsg={popUpMsg} />}
            {!userOnAuthPage && <div className="navigation">
                 <Navigation 
-                onClick={scrollToTop} sx={{color: 'yellow', fontSize: '2rem'}} />
+                onClick={scrollToTop} sx={{color: 'blue', fontSize: '2rem'}} />
             </div>}
             {!userOnAuthPage && <Navbar />}
             <main style={{ height: userOnAuthPage && '100%' }}>{children}</main>

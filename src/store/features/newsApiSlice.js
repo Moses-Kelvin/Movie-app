@@ -1,15 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { THE_NEWS_API_KEY } from "../../config";
 
-const api_key = "a15c3c88ccda4d9ea78e65b050303c41";
+
+
+const options = {
+    method: 'GET',
+    headers: {
+        'X-RapidAPI-Key': THE_NEWS_API_KEY,
+        'X-RapidAPI-Host': 'community-hacker-news-v1.p.rapidapi.com'
+    }
+};
 
 export const newsApiSlice = createApi({
     reducerPath: "newsApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "https://newsapi.org/v2/" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://community-hacker-news-v1.p.rapidapi.com/", options }),
     endpoints: (builder) => ({
         getTopStoriesNews: builder.query({
-            query: () => `top-headlines?country=us&category=entertainment&apiKey=${THE_NEWS_API_KEY}`,
-        }), 
+            query: () => `topstories.json?print=pretty`,
+        }),
     }),
 });
 

@@ -14,6 +14,7 @@ import TvShowSingle from './pages/TvShow/TVShowSingle';
 import News from './pages/News';
 import User from './pages/User//User';
 import UserProfileSettings from './pages/User/UserProfileSettings';
+import Notifications from './pages/Notification/Notifications';
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         { path: '/Movies/:movieId/*', element: <MovieSingle />},
         { path: user && '/User/:userName/*', element: <User /> },
         { path: user && '/User/:userName/settings', element: <UserProfileSettings />},
+        {path: user && '/notifications', element: <Notifications /> },
         { path: '*', element: <Navigate to='home' /> }
     ]);
 

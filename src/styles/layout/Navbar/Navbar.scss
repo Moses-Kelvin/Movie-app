@@ -103,17 +103,19 @@
             padding-left: 1rem;
             font-size: 2rem;
         }
+
     }
 
     .navbar-icons {
         padding-right: 1rem;
-        column-gap: 0.3rem;
+        column-gap: 1rem;
     }
 
     .active::after {
         content: "";
         bottom: -1rem;
     }
+
 }
 
 

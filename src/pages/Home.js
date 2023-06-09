@@ -31,6 +31,8 @@ const Home = () => {
         </div>
     );
 
+    console.log(TopStoriesNews);
+
 return (
     <>
         <FeaturedMovie />

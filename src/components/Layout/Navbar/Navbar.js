@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import '../../../styles/layout/Navbar/Navbar.scss';
-import { Search, AccountCircle, Menu } from "@mui/icons-material";
+import { Search, AccountCircle, Menu, Notifications } from "@mui/icons-material";
 import Button from '../../UI/Button';
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import SearchModal from "../../UI/Modal/SearchModal";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useMediaQuery, useTheme, Badge } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../../../firebase";
+import { auth, db, logout } from "../../../firebase";
 import { useFetchUserDataQuery } from "../../../store/features/userDataSlice";
 import Sidebar from "../../UI/Sidebar/Sidebar";
 import useFetchProfilePic from "../../../hooks/use-fetchProfilePic";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const Navbar = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
     const [searchIsVisible, setSearchIsVisible] = useState(false);
+    const [notifications, setNotifications] = useState([]);
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
 
@@ -31,7 +33,18 @@ const Navbar = () => {
     useEffect(() => {
         setOpenSidebar(false);
         setSearchIsVisible(false);
-    }, [location])
+    }, [location]);
+
+    useEffect(() => {
+            const q = query(collection(db, `users/${currentUser?.docId}/Notifications`),
+            where("onRead", "==", false));
+            onSnapshot(q, (snapshot) => {
+                setNotifications(snapshot.docs.map(doc => ({
+                  id: doc.id,
+                  data: doc.data()
+                })))
+              })
+    }, [currentUser?.docId]);
 
 
     const logUserOut = () => {
@@ -84,8 +97,15 @@ const Navbar = () => {
                 <div className="navbar-icons">
                     <Search sx={{ fontSize: '30px', paddingRight: '1rem' }}
                         onClick={() => setSearchIsVisible(true)} />
+                    <Link to="notifications">
+                        {user && <Badge badgeContent={notifications.length} 
+                        invisible={notifications.length === 0} color="error" maximum={9}>
+                            <Notifications sx={{ fontSize: '30px' }} />
+                        </Badge>
+                        }
+                    </Link>
                     {user && <Link to={`User/${currentUser?.data.name}`}>
-                        {profilePic?
+                        {profilePic ?
                             <img src={profilePic} alt="" />
                             : <AccountCircle sx={{ fontSize: '40px', color: 'white' }} />}
                     </Link>}
