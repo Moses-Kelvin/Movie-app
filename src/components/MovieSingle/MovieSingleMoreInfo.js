@@ -10,7 +10,7 @@ const MovieSingleMoreInfo = () => {
 
    const { data } = useGetSingleMovieQuery(movieId);
 
-   // const { data: videos } = useGetMovieVideoQuery(movieId);
+   const { data: videos } = useGetMovieVideoQuery(movieId);
 
 
    return (
@@ -29,7 +29,7 @@ const MovieSingleMoreInfo = () => {
                   <p className="SingleGenre" key={index}>{genre.name}</p>
                )}
             </div>
-            {/* <h2>{`Videos(${videos?.results.length})`}</h2>
+            <h2>{`Videos(${videos?.results.length})`}</h2>
             <div className="videos scroller">
                {videos?.results.map((video) =>
                   <div className="video" key={video?.id}>
@@ -47,8 +47,7 @@ const MovieSingleMoreInfo = () => {
                      </div>
                   </div>
                )}
-            </div> */}
-
+            </div>
          </div>
          <Link to="Comments">
             <Button className="view-comment_btn">View Comments</Button>
