@@ -1,60 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import '../../styles/Movies/FeaturedMovie.scss';
 import { useGetTrendingMoviesQuery } from "../../store/features/moviesApiSlice";
 import FavouriteMoviecard from "./FeaturedMovieCard";
+import { useMediaQuery, useTheme } from "@mui/material";
+import { Scrollbar, Navigation, Pagination, Autoplay, EffectCoverflow} from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react"
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
 
 
 
 const FeaturedMovie = () => {
 
-    const [index, setIndex] = useState(0);
-    const timeoutRef = useRef(null);
-
-    const resetTimeout = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-    };
-
+    const theme = useTheme();
+    const desktop = useMediaQuery(theme.breakpoints.up('sm'));
 
     const { data: trendingMovies, isFetching: isTrendingMoviesFetching } = useGetTrendingMoviesQuery();
-    const trendingMoviesResult = JSON.parse(localStorage.getItem('trendingMovies'));
-
-    useEffect(() => {
-        resetTimeout();
-        timeoutRef.current = setTimeout(() =>
-            setIndex((prevIndex) =>
-                prevIndex === trendingMovies?.results.length - 1 ? 0 : prevIndex + 1
-            ), 10000
-        );
-        return () => {
-            resetTimeout();
-        };
-    }, [index, trendingMovies?.results.length]);
-
-
 
     return (
         <>
-            <div className="featuredMovie-slideshow">
-                <div className="featuredMovie-slideshowSlider"
-                    style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
-                    {trendingMovies?.results.map((movie, index) => (
+            <Swiper
+                modules={[Autoplay, Navigation, Pagination, Scrollbar, EffectCoverflow]}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                navigation={desktop} 
+                autoplay={{delay: 10000}}
+                effect="coverflow"
+                scrollbar={{ draggable: true }}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={() => console.log('slide change')}
+            >
+                {trendingMovies?.results.map((movie, index) => (
+                    <SwiperSlide>
                         <FavouriteMoviecard
-                            key={index}
+                            key={movie.id}
                             movie={movie}
                         />
-                    ))}
-                </div>
-                <div className="slideShowDots">
-                    {trendingMovies?.results.map((_, idx) =>
-                        <div key={idx} className={`slideShowDot ${index === idx ? "activeDot" : ""}`}
-                            onClick={() => { setIndex(idx) }}></div>
-                    )}
-                </div>
-            </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </>
     )
 };
 
 export default FeaturedMovie;
+
+
+
+// <div className="featuredMovie-slideshow">
+// <div className="featuredMovie-slideshowSlider"
+//     style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
+//     {trendingMovies?.results.map((movie, index) => (
+//         <FavouriteMoviecard
+//             key={index}
+//             movie={movie}
+//         />
+//     ))}
+// </div>
+// <div className="slideShowDots">
+//     {trendingMovies?.results.map((_, idx) =>
+//         <div key={idx} className={`slideShowDot ${index === idx ? "activeDot" : ""}`}
+//             onClick={() => { setIndex(idx) }}></div>
+//     )}
+// </div>
+// </div>
